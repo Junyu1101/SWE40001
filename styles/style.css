@@ -1,0 +1,195 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+/* Header Styles */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(254, 193, 016);
+    padding: 10px 20px;
+}
+
+
+.logo img {
+    max-width: 120px; /* Reduce size for mobile */
+}
+
+.login a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Navbar Styles */
+/* .navbar {
+    background-color: rgb(236, 034, 043);
+    text-align: center;
+    padding: 10px 0;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; 
+}
+
+.navbar ul li {
+    margin: 5px 0;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+} 
+*/
+
+/* Navbar Styles */
+.navbar-wrapper {
+    text-align: center; /* Center the inline-block navbar */
+}
+
+.navbar {
+    background-color: rgb(236, 034, 043);
+    text-align: center;
+    padding: 15px 20px;
+    width: auto; /* Let the content define the width */
+    display: inline-block;
+    margin: 0 auto; /* Center the navbar */
+    border-radius: 10px; /* Optional: rounded corners */
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0 auto; /* Center the entire ul */
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Align items in the center */
+   
+    max-width: 600px; /* Optional: limit the maximum width for the buttons */
+}
+
+.navbar ul li {
+    margin: 10px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* Icon Box Styles */
+.icon-box {
+    background-color: rgb(255, 255, 255);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    transition: background-color 0.3s ease;
+}
+
+.icon-box img {
+    max-width: 40px;
+    margin-bottom: 5px;
+}
+
+.icon-box span {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    .navbar ul {
+        flex-direction: row;
+    }
+
+    .icon-box {
+        width: 100px;
+        height: 100px;
+    }
+
+    .icon-box img {
+        max-width: 50px;
+    }
+
+    .icon-box span {
+        font-size: 16px;
+    }
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: rgb(254, 193, 016);
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content p {
+    margin: 0;
+    color: #000;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    /* Header Styles for Larger Screens */
+    .header-container {
+        padding: 20px 40px;
+    }
+
+    .logo img {
+        max-width: 150px;
+    }
+
+    /* Navbar Styles for Larger Screens */
+    .navbar ul {
+        flex-direction: row; /* Change to row for larger screens */
+    }
+
+    .navbar ul li {
+        margin: 0 15px;
+    }
+
+    /* Footer Styles */
+    footer {
+        padding: 20px 0;
+        position: fixed;
+    }
+}
+
+/* Row Alignment for Divs */
+.index-row-container {
+    display: flex;
+    justify-content: space-around; /* Space evenly between each div */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    padding: 20px;
+}
+
+.index-row-container > div {
+    background-color: rgb(254, 193, 016);
+    color: #000;
+    padding: 20px;
+    margin: 10px;
+    flex: 1 1 200px; /* Grow to fill space, minimum width of 200px */
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
