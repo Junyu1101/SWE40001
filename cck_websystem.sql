@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 02:50 AM
+-- Generation Time: Oct 18, 2024 at 10:47 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -68,11 +68,19 @@ CREATE TABLE `game` (
 
 CREATE TABLE `product` (
   `productID` int(11) NOT NULL,
-  `recipeID` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `price` int(11) NOT NULL,
+  `description` text NOT NULL,
   `category` varchar(100) NOT NULL,
-  `image` blob NOT NULL
+  `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`productID`, `name`, `price`, `description`, `category`, `image`) VALUES
+(1, 'CCK SWEET CORN 500G', 5, 'One of the main nutritional benefits of sweetcorn is its high fibre content. And as we know, dietary fibre is important for our health: it aids digestion, it can decrease the risk of heart disease, strokes.\r\nOn top of that, fibre helps you stay fuller for longer just like consuming potatoes.\r\n', 'Vegetable', 'images/corn_product.jpeg');
 
 -- --------------------------------------------------------
 
@@ -111,10 +119,18 @@ CREATE TABLE `recipe` (
 --
 
 CREATE TABLE `user` (
-  `memberID` varchar(32) NOT NULL,
-  `spinID` int(11) NOT NULL,
-  `phoneNumber` int(11) NOT NULL
+  `userID` int(11) NOT NULL,
+  `memberID` varchar(32) DEFAULT NULL,
+  `spinID` int(11) DEFAULT NULL,
+  `phoneNumber` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`userID`, `memberID`, `spinID`, `phoneNumber`) VALUES
+(1, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -160,7 +176,7 @@ ALTER TABLE `recipe`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`memberID`);
+  ADD PRIMARY KEY (`userID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -188,7 +204,7 @@ ALTER TABLE `game`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `promotion`
