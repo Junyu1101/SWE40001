@@ -177,6 +177,7 @@ $result = $conn->query($sql);
     <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                
                 echo "<div class='recipe'>";
                 echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
                 echo "<p>" . htmlspecialchars($row['description']) . "</p>";
@@ -184,13 +185,14 @@ $result = $conn->query($sql);
                 // Decode image JSON to array
                 $imageArray = json_decode($row['image'], true);
 
+                
                 echo "<div class='slideshow-container'>";
                 echo "<div class='slides'>";
-                foreach ($imageArray as $image_path) {
-                    echo "<div class='slide'>";
-                    echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($row['title']) . "'>";
-                    echo "</div>";
-                }
+                    foreach ($imageArray as $image_path) {
+                        echo "<div class='slide'>";
+                        echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($row['title']) . "'>";
+                        echo "</div>";
+                    }
                 echo "</div>"; // End of slides
 
                 // Add navigation buttons
@@ -217,7 +219,8 @@ $result = $conn->query($sql);
     
     <script>
         function plusSlides(event, n, btn) {
-            const slides = btn.parentNode.querySelectorAll('.slide');
+            const slideshowContainer = btn.parentNode; // Get the specific slideshow container
+            const slides = slideshowContainer.querySelectorAll('.slide'); // Only get the slides within this container
             let currentSlide = 0;
 
             // Find the currently visible slide
@@ -227,8 +230,10 @@ $result = $conn->query($sql);
                 }
             });
 
-            // Hide the current slide
-            slides[currentSlide].style.display = 'none';
+            // Hide all slides in the current container
+            slides.forEach((slide) => {
+                slide.style.display = 'none';
+            });
 
             // Calculate the next slide index
             let nextSlide = currentSlide + n;
@@ -239,11 +244,17 @@ $result = $conn->query($sql);
             slides[nextSlide].style.display = 'block';
         }
 
-        // Initialize slides on page load
+        // Initialize slides on page load for each slideshow
         document.addEventListener('DOMContentLoaded', () => {
-            const allSlides = document.querySelectorAll('.slideshow-container .slide');
-            allSlides[0].style.display = 'block'; // Show the first slide initially
+            const allSlideshows = document.querySelectorAll('.slideshow-container');
+            allSlideshows.forEach((slideshow) => {
+                const slides = slideshow.querySelectorAll('.slide');
+                if (slides.length > 0) {
+                    slides[0].style.display = 'block'; // Show the first slide in each slideshow
+                }
+            });
         });
+
     </script>
 
 </body>

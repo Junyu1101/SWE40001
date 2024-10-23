@@ -175,7 +175,8 @@ $result = $conn->query($sql);
     
     <script>
         function plusSlides(event, n, btn) {
-            const slides = btn.parentNode.querySelectorAll('.slide');
+            const slideshowContainer = btn.parentNode; // Get the specific slideshow container
+            const slides = slideshowContainer.querySelectorAll('.slide'); // Only get the slides within this container
             let currentSlide = 0;
 
             // Find the currently visible slide
@@ -185,8 +186,10 @@ $result = $conn->query($sql);
                 }
             });
 
-            // Hide the current slide
-            slides[currentSlide].style.display = 'none';
+            // Hide all slides in the current container
+            slides.forEach((slide) => {
+                slide.style.display = 'none';
+            });
 
             // Calculate the next slide index
             let nextSlide = currentSlide + n;
@@ -197,11 +200,17 @@ $result = $conn->query($sql);
             slides[nextSlide].style.display = 'block';
         }
 
-        // Initialize slides on page load
+        // Initialize slides on page load for each slideshow
         document.addEventListener('DOMContentLoaded', () => {
-            const allSlides = document.querySelectorAll('.slideshow-container .slide');
-            allSlides[0].style.display = 'block'; // Show the first slide initially
+            const allSlideshows = document.querySelectorAll('.slideshow-container');
+            allSlideshows.forEach((slideshow) => {
+                const slides = slideshow.querySelectorAll('.slide');
+                if (slides.length > 0) {
+                    slides[0].style.display = 'block'; // Show the first slide in each slideshow
+                }
+            });
         });
+
     </script>
 
 </body>
