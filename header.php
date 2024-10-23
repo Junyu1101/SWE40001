@@ -13,7 +13,9 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="images/ccklogo.png" alt="CCK Logo">
+                <a href="index.php">
+                    <img src="images/ccklogo.png" alt="CCK Logo">
+                </a>
             </div>
             <div class="login">
                 <a href="member_login.php">Login</a>
