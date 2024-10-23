@@ -2,7 +2,6 @@
 // Include the database connection
 include 'databaseconnection.php';
 
-
 // Fetch all images and captions to display them
 $sql = "SELECT * FROM recipe";
 $result = $conn->query($sql);
@@ -16,18 +15,17 @@ $result = $conn->query($sql);
     <title>Member Recipe Page</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
-        
+        /* Add any member-specific styling here */
     </style>
 </head>
 <body>
 
     <?php include 'header.php'; ?>
 
-    <div class="Member-recipe-top">
+    <div class="recipe-top">
         <div>
-            <h1>Recipe Member</h1>
+            <h1>Recipe List</h1>
         </div>
-
     </div>
 
     <div class="recipe-full-container">

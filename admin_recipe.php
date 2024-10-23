@@ -75,11 +75,12 @@ $result = $conn->query($sql);
                 echo "<a class='next' onclick='plusSlides(event, 1, this)'>&#10095;</a>";
                 echo "</div>"; // End slideshow
 
-                // Add delete button
-                echo "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='POST' onsubmit='return confirm(\"Are you sure you want to delete this recipe?\");'>";
+                // Add class to the form for delete functionality
+                echo "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='POST' onsubmit='return confirm(\"Are you sure you want to delete this recipe?\");' class='admin-form'>";
                 echo "<input type='hidden' name='recipe_id' value='" . $row['recipeID'] . "'>"; // Use recipeID
-                echo "<input type='submit' value='Delete'>";
+                echo "<input type='submit' value='Delete' class='admin-delete-btn'>"; // Add class to delete button
                 echo "</form>";
+
 
                 echo "</div>"; // End recipe
             }

@@ -37,21 +37,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
     <title>Upload Recipe</title>
 </head>
 <body>
     <h1>Upload Recipe</h1>
-    <form action="upload_recipe.php" method="POST" enctype="multipart/form-data">
-        <label for="title">Title:</label>
-        <input type="text" name="title" required><br>
+        <form action="upload_recipe.php" method="POST" enctype="multipart/form-data" class="admin-form"> <!-- Add class -->
+            <label for="title">Title:</label>
+            <input type="text" name="title" required><br>
 
-        <label for="description">Description:</label>
-        <textarea name="description" required></textarea><br>
+            <label for="description">Description:</label>
+            <textarea name="description" required></textarea><br>
 
-        <label for="images">Upload Images (multiple allowed):</label>
-        <input type="file" name="images[]" multiple><br>
+            <label for="images">Upload Images (multiple allowed):</label>
+            <input type="file" name="images[]" multiple><br>
 
-        <input type="submit" value="Upload">
-    </form>
+            <input type="submit" value="Upload">
+        </form>
+
 </body>
 </html>
