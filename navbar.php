@@ -10,18 +10,18 @@
 <nav class="navbar">
     <ul>
         <li>
-            <a href="promotion.php">
+            <a href="promotions.php">
                 <div class="icon-box">
                 <i class="fa-solid fa-bullhorn"></i>
-                    <span>Promotion</span>
+                    <span>Promotions</span>
                 </div>
             </a>
         </li>
         <li>
-            <a href="product.php">
+            <a href="products.php">
                 <div class="icon-box">
                 <i class="fa-solid fa-list"></i>
-                    <span>Product</span>
+                    <span>Products</span>
                 </div>
             </a>
         </li>
@@ -34,10 +34,10 @@
             </a>
         </li>
         <li>
-            <a href="recipe.php">
+            <a href="recipes.php">
                 <div class="icon-box">
                     <i class="fa-solid fa-book"></i>
-                    <span>Recipe</span>
+                    <span>Recipes</span>
                 </div>
             </a>
         </li>

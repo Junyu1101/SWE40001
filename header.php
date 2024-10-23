@@ -16,7 +16,7 @@
                 <img src="images/ccklogo.png" alt="CCK Logo">
             </div>
             <div class="login">
-                <a href="login.php">Login</a>
+                <a href="member_login.php">Login</a>
             </div>
         </div>
         <div class="navbar-wrapper">
