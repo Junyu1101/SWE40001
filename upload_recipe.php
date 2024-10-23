@@ -37,11 +37,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
     <title>Upload Recipe</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        
+        /* Form styles */
+        .form_h1{
+            text-align: center;
+        }
+        .admin-form {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .admin-form input[type="text"],
+        .admin-form textarea,
+        .admin-form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+
+        .admin-form input[type="submit"] {
+            background-color: #35424a;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .admin-form input[type="submit"]:hover {
+            background-color: #2c3e50;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Recipe</h1>
+    <h1 class="form_h1">Upload Recipe</h1>
         <form action="upload_recipe.php" method="POST" enctype="multipart/form-data" class="admin-form"> <!-- Add class -->
             <label for="title">Title:</label>
             <input type="text" name="title" required><br>

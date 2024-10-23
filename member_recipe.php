@@ -15,7 +15,117 @@ $result = $conn->query($sql);
     <title>Member Recipe Page</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
-        /* Add any member-specific styling here */
+        /* smae as admin_recipe.php */
+
+        /* Recipe top */
+        .recipe-top {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recipe-top h1 {
+            margin: 0;
+        }
+
+        .recipe {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe h2 {
+            margin-top: 0;
+        }
+
+        .recipe p {
+            color: #555;
+        }
+
+        /* Slideshow styles */
+        .slideshow-container {
+            position: relative;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+        }
+
+        .slide {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .slide img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        /* Navigation buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .prev {
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .next {
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Delete button */
+        .admin-delete-btn {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .admin-delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .admin-form, .recipe {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .prev, .next {
+                padding: 10px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -24,7 +134,7 @@ $result = $conn->query($sql);
 
     <div class="recipe-top">
         <div>
-            <h1>Recipe List</h1>
+            <h1>Recipe List: </h1>
         </div>
     </div>
 
