@@ -3,51 +3,59 @@
 <div class="showcase-container">
     <!-- Promotion Row -->
     <div class="showcase-row">
-        <h2>Promotions</h2>
+        <h2>Promotions <a href="promotions.php">view all</a></h2>
         <div class="showcase-slider" id="promotion-slider">
-            <div class="showcase-item">
-                <h1>10% OFF</h1>
+            <div class="showcase-promotion">
+                <h1>10% OFF PRODUCT</h1>
             </div>
 
-            <div class="showcase-item">
+            <div class="showcase-promotion">
                 <h1>BUY 1 FREE 1</h1>
             </div>
 
-            <div class="showcase-item">
+            <div class="showcase-promotion">
                 <h1>20% OFF SECOND PURCHASE</h1>
             </div>
 
-            <div class="showcase-item">
+            <div class="showcase-promotion">
                 <h1>15% OFF TOTAL</h1>
             </div>
         </div>
     </div>
 
+    <br>
+
     <!-- Recipe Row -->
     <div class="showcase-row">
-        <h2>Recipes</h2>
+        <h2>Recipes <a href="recipes.php">view all</a></h2>
         <div class="showcase-slider" id="recipe-slider">
-            <div class="showcase-item">
-                Recipe 1
+            <div class="showcase-recipe">
+                <img src="images/corn-recipe.jpg">
+                <h1>Creamed Corn</h1>
             </div>
 
-            <div class="showcase-item">
-                Recipe 2
+            <div class="showcase-recipe">
+                <img src="images/chickennugget-recipe.jpg">
+                <h1>Air Fried Chicken Nugget with Sauce</h1>
             </div>
 
-            <div class="showcase-item">
-                Recipe 3
+            <div class="showcase-recipe">
+                <img src="images/fishball-recipe.jpeg">
+                <h1>Fishball Skewers</h1>
             </div>
 
-            <div class="showcase-item">
-                Recipe 4
+            <div class="showcase-recipe">
+                <img src="images/mincedbeef-recipe.jpg">
+                <h1>Rice with Minced Beef and Broccoli</h1>
             </div>
         </div>
     </div>
 
+    <br>
+
     <!-- Product Row -->
     <div class="showcase-row">
-        <h2>Products</h2>
+        <h2>Products <a href="products.php">view all</a></h2>
         <div class="showcase-slider" id="product-slider">
             <div class="showcase-item">
                 <img src="images/chickennuggets.jpeg">
@@ -75,5 +83,11 @@
         </div>
     </div>
 </div>
+
+
+<br>
+<br>
+<br>
+
 
 <?php include 'footer.php'; ?>
