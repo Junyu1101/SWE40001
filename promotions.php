@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="promotion/promotion/style.css">
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    </style>
   <script>
     function loadPromotions() {
       fetch("fetch_promotions.php")
@@ -50,5 +52,7 @@
 
   <?php include 'footer.php'; ?>
 </body>
+
+
 
 </html>
