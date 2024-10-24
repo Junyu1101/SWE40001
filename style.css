@@ -45,7 +45,7 @@ nav ul li a:hover {
 }
 
 /* Sidebar Styles */
-.sidebar {
+.product-sidebar {
     width: 250px;
     background-color: #f0f0f0;
     padding: 20px;
@@ -56,27 +56,27 @@ nav ul li a:hover {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar h2 {
+.product-sidebar h2 {
     font-size: 20px;
     margin-bottom: 15px;
 }
 
-.sidebar ul {
+.product-sidebar ul {
     list-style-type: none;
     padding: 0;
 }
 
-.sidebar ul li {
+.product-sidebar ul li {
     margin: 15px 0;
 }
 
-.sidebar ul li a {
+.product-sidebar ul li a {
     color: #333;
     text-decoration: none;
     font-size: 18px;
 }
 
-.sidebar ul li a:hover {
+.product-sidebar ul li a:hover {
     text-decoration: underline;
 }
 
@@ -119,7 +119,7 @@ nav ul li a:hover {
 
 /* Responsive for small screens */
 @media (max-width: 768px) {
-    .sidebar {
+    .product-sidebar {
         display: none;
     }
 

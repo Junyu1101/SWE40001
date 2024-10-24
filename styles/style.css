@@ -55,27 +55,29 @@ body {
 
 /* Navbar Styles */
 .navbar-wrapper {
-    text-align: center; /* Center the inline-block navbar */
+    text-align: center;
+    width: 100%; /* Ensure it spans the full width of the viewport */
 }
 
 .navbar {
     background-color: rgb(236, 034, 043);
-    text-align: center;
     padding: 15px 20px;
-    width: auto; /* Let the content define the width */
+    border-radius: 10px;
     display: inline-block;
-    margin: 0 auto; /* Center the navbar */
-    border-radius: 10px; /* Optional: rounded corners */
+    margin: 0 auto;
+    width: auto;
+    max-width: 100%; /* Prevent overflow */
 }
 
 .navbar ul {
     list-style: none;
-    margin: 0 auto; /* Center the entire ul */
+    margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center; /* Align items in the center */
-   
-    max-width: 600px; /* Optional: limit the maximum width for the buttons */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    justify-content: center;
+    max-width: 600px; /* Optional: limit the maximum width */
+    gap: 10px; /* Add some spacing between items */
 }
 
 .navbar ul li {
@@ -303,6 +305,7 @@ footer {
     text-align: center;
     scroll-snap-align: start;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
 }
 
 .showcase-promotion h1 {
@@ -337,6 +340,7 @@ footer {
     scroll-snap-align: start;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    min-width: 180px; /* Minimum width for the recipe item */
 }
 
 .showcase-recipe img {
@@ -734,6 +738,96 @@ button {
 /* Show pop-up */
 .show {
     display: flex;
+}
+
+/* Product Page */
+/* Sidebar Styles */
+.product-sidebar {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    position: fixed;
+    top: 60px; /* Adjusted for navbar height */
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+  
+.product-sidebar h2 {
+font-size: 20px;
+margin-bottom: 15px;
+}
+
+.product-sidebar ul {
+list-style-type: none;
+padding: 0;
+}
+
+.product-sidebar ul li {
+margin: 15px 0;
+}
+
+.product-sidebar ul li a {
+color: #333;
+text-decoration: none;
+font-size: 18px;
+}
+
+.product-sidebar ul li a:hover {
+text-decoration: underline;
+}
+
+/* Product Container */
+.product-container {
+margin-left: 270px; /* Adjust for sidebar width */
+padding: 80px 20px 20px; /* Adjusted for the navbar and sidebar */
+}
+
+.product-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 20px;
+}
+
+/* Product Item Styles */
+.product-item {
+background-color: white;
+padding: 20px;
+text-align: center;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-item img {
+width: 100%;
+height: auto;
+border-radius: 10px;
+}
+
+.product-item p {
+margin: 10px 0 0 0;
+font-weight: bold;
+color: #333;
+}
+
+.product-item a {
+text-decoration: none;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
+    .product-sidebar {
+        display: none;
+    }
+
+    .product-container {
+        margin-left: 0;
+        padding: 80px 10px 20px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
 }
 
 
