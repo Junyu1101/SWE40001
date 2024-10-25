@@ -830,6 +830,72 @@ text-decoration: none;
     }
 }
 
+        /* Product details Style */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container for Product Details */
+        .product-details-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 60px auto; /* Add some margin from the top */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        /* Product Image */
+        .product-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Product Info */
+        .product-info {
+            text-align: center;
+        }
+
+        .product-info h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .product-info p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Product Price */
+        .product-price {
+            font-size: 24px;
+            color: #e67e22;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .product-details-container {
+                padding: 15px;
+            }
+
+            .product-info h1 {
+                font-size: 24px;
+            }
+
+            .product-price {
+                font-size: 20px;
+            }
+        }
+
 
 
 /*recipe start*/
