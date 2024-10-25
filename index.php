@@ -1,25 +1,32 @@
-<?php include 'header.php'; ?>
+<?php 
+include 'header.php'; 
+include 'databaseconnection.php'; // Include the database connection
+
+// Function to fetch data from the database with a limit
+function fetchData($conn, $table, $limit = 6) {
+    $sql = "SELECT * FROM $table LIMIT $limit";
+    $result = $conn->query($sql);
+    return $result;
+}
+?>
 
 <div class="showcase-container">
     <!-- Promotion Row -->
     <div class="showcase-row">
         <h2>Promotions <a href="promotions.php">view all</a></h2>
         <div class="showcase-slider" id="promotion-slider">
-            <div class="showcase-promotion">
-                <h1>10% OFF PRODUCT</h1>
-            </div>
-
-            <div class="showcase-promotion">
-                <h1>BUY 1 FREE 1</h1>
-            </div>
-
-            <div class="showcase-promotion">
-                <h1>20% OFF SECOND PURCHASE</h1>
-            </div>
-
-            <div class="showcase-promotion">
-                <h1>15% OFF TOTAL</h1>
-            </div>
+            <?php
+            $promotions = fetchData($conn, 'promotion');
+            if ($promotions->num_rows > 0) {
+                while ($promotion = $promotions->fetch_assoc()) {
+                    echo '<div class="showcase-promotion">';
+                    echo '<h1>' . htmlspecialchars($promotion['title']) . '</h1>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<p>No promotions available.</p>';
+            }
+            ?>
         </div>
     </div>
 
@@ -29,25 +36,24 @@
     <div class="showcase-row">
         <h2>Recipes <a href="recipes.php">view all</a></h2>
         <div class="showcase-slider" id="recipe-slider">
-            <div class="showcase-recipe">
-                <img src="images/corn-recipe.jpg">
-                <h1>Creamed Corn</h1>
-            </div>
-
-            <div class="showcase-recipe">
-                <img src="images/chickennugget-recipe.jpg">
-                <h1>Air Fried Chicken Nugget with Sauce</h1>
-            </div>
-
-            <div class="showcase-recipe">
-                <img src="images/fishball-recipe.jpeg">
-                <h1>Fishball Skewers</h1>
-            </div>
-
-            <div class="showcase-recipe">
-                <img src="images/mincedbeef-recipe.jpg">
-                <h1>Rice with Minced Beef and Broccoli</h1>
-            </div>
+            <?php
+            $recipes = fetchData($conn, 'recipe');
+            if ($recipes->num_rows > 0) {
+                while ($recipe = $recipes->fetch_assoc()) {
+                    // Decode the JSON-like array to get the list of images
+                    $images = json_decode($recipe['image'], true);
+                    // Check if the decoding was successful and the array is not empty
+                    $firstImage = is_array($images) && !empty($images) ? $images[0] : 'default.jpg'; // Use a default image if needed
+    
+                    echo '<div class="showcase-recipe">';
+                    echo '<img src="' . htmlspecialchars($firstImage) . '" alt="' . htmlspecialchars($recipe['title']) . '">';
+                    echo '<h1>' . htmlspecialchars($recipe['title']) . '</h1>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<p>No recipes available.</p>';
+            }
+            ?>
         </div>
     </div>
 
@@ -57,37 +63,27 @@
     <div class="showcase-row">
         <h2>Products <a href="products.php">view all</a></h2>
         <div class="showcase-slider" id="product-slider">
-            <div class="showcase-item">
-                <img src="images/chickennuggets.jpeg">
-                <h1>CCK CHICKEN NUGGETS 450G</h1>
-                <p>RM 10.20</p>
-            </div>
-
-            <div class="showcase-item">
-                <img src="images/corn_product.jpeg">
-                <h1>CCK SWEET CORN 500G </h1>
-                <p>RM 4.90</p>
-            </div>
-
-            <div class="showcase-item">
-                <img src="images/fishball.jpeg">
-                <h1>CCK FISH BALL 500G</h1>
-                <p>RM 8.40</p>
-            </div>
-
-            <div class="showcase-item">
-                <img src="images/mincedbeef.jpeg">
-                <h1>CCK MINCED BEEF 400G</h1>
-                <p>Rm 11.20</p>
-            </div>
+            <?php
+            $products = fetchData($conn, 'product');
+            if ($products->num_rows > 0) {
+                while ($product = $products->fetch_assoc()) {
+                    echo '<div class="showcase-item">';
+                    echo '<img src="' . htmlspecialchars($product['image']) . '" alt="' . htmlspecialchars($product['name']) . '">';
+                    echo '<h1>' . htmlspecialchars($product['name']) . '</h1>';
+                    echo '<p>RM ' . number_format($product['price'], 2) . '</p>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<p>No products available.</p>';
+            }
+            ?>
         </div>
     </div>
 </div>
 
+<br><br><br>
 
-<br>
-<br>
-<br>
+<?php 
+include 'footer.php'; 
+?>
 
-
-<?php include 'footer.php'; ?>
