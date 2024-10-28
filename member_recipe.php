@@ -15,23 +15,32 @@ $result = $conn->query($sql);
     <title>Member Recipe Page</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
-        /* smae as admin_recipe.php */
-
         /* Recipe top */
         .recipe-top {
-            background-color: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 8px;
             padding: 20px;
             margin: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Centers the content horizontally */
             align-items: center;
+            text-align: center; /* Centers text within the element */
         }
 
         .recipe-top h1 {
             margin: 0;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+
+        }
+
+        .recipe-full-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+            margin-bottom: 100px;
         }
 
         .recipe {
@@ -41,6 +50,10 @@ $result = $conn->query($sql);
             padding: 20px;
             margin: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+            width: 30%; /* Each recipe takes roughly a third of the row */
+            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         .recipe h2 {
@@ -75,6 +88,14 @@ $result = $conn->query($sql);
             border-radius: 8px;
         }
 
+        .slide img {
+            width: 100%;
+            height: 200px; /* Set a fixed height for all images */
+            object-fit: cover; /* Ensures images fill the area while maintaining aspect ratio */
+            border-radius: 8px;
+        }
+
+
         /* Navigation buttons */
         .prev, .next {
             cursor: pointer;
@@ -100,31 +121,18 @@ $result = $conn->query($sql);
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        /* Delete button */
-        .admin-delete-btn {
-            background-color: #e74c3c;
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
+        @media (max-width: 900px) {
+            .recipe {
+                width: 45%; /* Two recipes per row on medium screens */
+            }
         }
 
-        .admin-delete-btn:hover {
-            background-color: #c0392b;
-        }
-
-        /* Responsive design */
         @media (max-width: 600px) {
-            .admin-form, .recipe {
-                margin: 10px;
-                padding: 15px;
-            }
-
-            .prev, .next {
-                padding: 10px;
+            .recipe {
+                width: 100%; /* Single column layout on small screens */
             }
         }
+
 
     </style>
 </head>
@@ -142,10 +150,9 @@ $result = $conn->query($sql);
     <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                echo "<a href='recipe_detail.php?recipeID=" . $row['recipeID'] . "' class='recipe-link'>";
                 echo "<div class='recipe'>";
-                echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
-                echo "<p>" . htmlspecialchars($row['description']) . "</p>";
-
+                
                 // Decode image JSON to array
                 $imageArray = json_decode($row['image'], true);
 
@@ -163,7 +170,12 @@ $result = $conn->query($sql);
                 echo "<a class='next' onclick='plusSlides(event, 1, this)'>&#10095;</a>";
                 echo "</div>"; // End slideshow
 
+                echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
+                
+
                 echo "</div>"; // End recipe
+                echo "</a>"; // end link to recipe details page
+
             }
         } else {
             echo "<p>No recipes found.</p>";
