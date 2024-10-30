@@ -3,7 +3,8 @@ include 'databaseconnection.php';
 
 $promotionID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$sql = "SELECT promotion.title, promotion.description, promotion.start_date, promotion.end_date, promotion.code , product.name 
+$sql = "SELECT promotion.title, promotion.description, promotion.start_date, promotion.end_date, promotion.code, 
+        product.name, product.image, product.productID 
         FROM promotion 
         JOIN product ON promotion.productID = product.productID 
         WHERE promotion.promotionID = $promotionID";
