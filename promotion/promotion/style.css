@@ -1,3 +1,15 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  background-color: #ffc107; /* Same background color as before */
+  padding: 10px;
+  position: relative;
+}
+
+.backicon {
+  margin-right: 10px;
+}
+
 .backicon a {
   text-decoration: none; /* Remove underline from the link */
   color: black; /* make the icon black color */
@@ -28,7 +40,35 @@
 }
 
 /* promotion detail style */
+/* Image adjustments */
+.product-image {
+  flex-shrink: 0;
+  margin-right: 100px;
+}
+
+.product-image img {
+  width: 200px; /* Smaller width */
+  height: 200px; /* Smaller height */
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Position the product name at the bottom left */
+.product-name {
+  font-weight: bold;
+  position: absolute;
+  bottom: 10px; /* Align to the bottom */
+  left: 10px; /* Align to the left */
+  color: black;
+}
+
+.promotion-detail-container {
+  width: 95%; /* Slightly larger for mobile */
+  align-items: center;
+}
+
 .promotion-detail {
+  width: auto;
   text-align: center;
   margin: 20px;
 }
@@ -42,12 +82,16 @@
 .dates span {
   font-weight: bold;
 }
-.productname a {
-  text-decoration: none; /* Remove underline from the link */
-  color: black;
+/* Position button at the bottom, above the footer */
+.fixed-bottom-button {
+  bottom: 80px; /* Adjust this value to control distance from the bottom */
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.show-code-btn {
+/* Style the button */
+.fixed-bottom-button .show-code-btn {
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -55,6 +99,7 @@
   cursor: pointer;
   border-radius: 5px;
 }
+
 /* Overlay for dark background effect */
 .overlay {
   position: fixed;
@@ -100,4 +145,25 @@
 
 .popup-content button:hover {
   background-color: #0056b3;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+  .product-name {
+    font-size: 1rem;
+    flex-grow: 1; /* Ensure the name takes up remaining space */
+  }
+  .product-image {
+    margin: 10px auto;
+    padding-right: 30px;
+  }
+
+  .product-image img {
+    width: 170px; /* Smaller size for mobile */
+    height: 170px;
+  }
+
+  .fixed-bottom-button {
+    bottom: 50px; /* Adjust this value to control distance from the bottom */
+  }
 }
