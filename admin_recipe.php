@@ -3,24 +3,26 @@
 include 'databaseconnection.php';
 
 // Handle delete request
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recipe_id'])) {
-    $recipe_id = $_POST['recipe_id'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] == 'delete' && isset($_POST['recipe_id'])) {
+        $recipe_id = $_POST['recipe_id'];
 
-    // Validate the recipe ID before deletion
-    if (!empty($recipe_id)) {
-        $sql = "DELETE FROM recipe WHERE recipeID = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $recipe_id); // Assuming recipeID is an integer
-        if ($stmt->execute()) {
-            echo "Recipe deleted successfully!";
-        } else {
-            echo "Error deleting recipe: " . $conn->error;
+        // Validate the recipe ID before deletion
+        if (!empty($recipe_id)) {
+            $sql = "DELETE FROM recipe WHERE recipeID = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $recipe_id);
+            if ($stmt->execute()) {
+                echo "Recipe deleted successfully!";
+            } else {
+                echo "Error deleting recipe: " . $conn->error;
+            }
+            $stmt->close();
         }
-        $stmt->close();
     }
 }
 
-// Fetch all images and captions to display them
+// Fetch all recipes from the database
 $sql = "SELECT * FROM recipe";
 $result = $conn->query($sql);
 ?>
@@ -30,233 +32,129 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Recipe Page</title>
+    <title>Admin Recipe Management</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
-
-        /* Recipe top */
-        .recipe-top {
-            background-color: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 8px;
+        .recipe-container {
+            max-width: 1000px;
+            margin: 20px auto;
             padding: 20px;
-            margin: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .recipe-top h1 {
-            margin: 0;
-        }
-
-        .recipe-top a {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-
-        .recipe-top a:hover {
-            background-color: #2980b9;
-        }
-
-        /* Recipe display */
-        .recipe {
-            background-color: #ffffff;
-            border: 1px solid #dddddd;
+            background-color: #f9f9f9;
             border-radius: 8px;
-            padding: 20px;
-            margin: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .recipe h2 {
-            margin-top: 0;
-        }
-
-        .recipe p {
-            color: #555;
-        }
-
-        /* Slideshow styles */
-        .slideshow-container {
-            position: relative;
-            max-width: 600px;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        .slides {
-            display: flex;
-        }
-
-        .slide {
-            display: none;
-            justify-content: center;
-            align-items: center;
+        .recipe-table {
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        .slide img {
-            max-width: 100%;
-            border-radius: 8px;
+        .recipe-table th, .recipe-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
         }
 
-        /* Navigation buttons */
-        .prev, .next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            width: auto;
-            padding: 16px;
-            margin-top: -22px;
-            color: white;
+        .recipe-table th {
+            background-color: #f2f2f2;
             font-weight: bold;
-            font-size: 18px;
-            border-radius: 0 3px 3px 0;
-            user-select: none;
         }
 
-        .prev {
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+        .recipe-table img {
+            max-width: 80px;
+            border-radius: 4px;
         }
 
-        .next {
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+        .action-buttons {
+            display: flex;
+            gap: 8px;
         }
 
-        /* Delete button */
-        .admin-delete-btn {
-            background-color: #e74c3c;
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
+        .btn {
+            padding: 8px 12px;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            color: white;
         }
 
-        .admin-delete-btn:hover {
-            background-color: #c0392b;
+        .btn-delete {
+            background-color: #e74c3c;
         }
 
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .admin-form, .recipe {
-                margin: 10px;
-                padding: 15px;
-            }
-
-            .prev, .next {
-                padding: 10px;
-            }
+        .btn-edit {
+            background-color: #3498db;
         }
 
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .image-container img {
+            max-width: 80px;
+            margin-right: 5px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
-
     <?php include 'header.php'; ?>
 
-    <div class="recipe-top">
-        <div>
-            <h1>Recipe Management</h1>
-        </div>
-        <div>
-            <a href="upload_recipe.php" target="_blank">Upload More Images</a>
-        </div>
+    <div class="recipe-container">
+        <h1>Recipe Management</h1>
+        <a href="upload_recipe.php" class="btn btn-edit">Upload New Recipe</a>
 
-    </div>
-
-    <div class="recipe-full-container">
-    <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                
-                echo "<div class='recipe'>";
-                echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
-                echo "<p>" . htmlspecialchars($row['description']) . "</p>";
-
-                // Decode image JSON to array
-                $imageArray = json_decode($row['image'], true);
-
-                
-                echo "<div class='slideshow-container'>";
-                echo "<div class='slides'>";
-                    foreach ($imageArray as $image_path) {
-                        echo "<div class='slide'>";
-                        echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($row['title']) . "'>";
-                        echo "</div>";
-                    }
-                echo "</div>"; // End of slides
-
-                // Add navigation buttons
-                echo "<a class='prev' onclick='plusSlides(event, -1, this)'>&#10094;</a>";
-                echo "<a class='next' onclick='plusSlides(event, 1, this)'>&#10095;</a>";
-                echo "</div>"; // End slideshow
-
-                // Add class to the form for delete functionality
-                echo "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='POST' onsubmit='return confirm(\"Are you sure you want to delete this recipe?\");' class='admin-form'>";
-                echo "<input type='hidden' name='recipe_id' value='" . $row['recipeID'] . "'>"; // Use recipeID
-                echo "<input type='submit' value='Delete' class='admin-delete-btn'>"; // Add class to delete button
-                echo "</form>";
-
-
-                echo "</div>"; // End recipe
-            }
-        } else {
-            echo "<p>No recipes found.</p>";
-        }
-    ?>
+        <?php if ($result->num_rows > 0): ?>
+            <table class="recipe-table">
+                <thead>
+                    <tr>
+                        <th>Recipe ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Images</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['recipeID']); ?></td>
+                            <td><?php echo htmlspecialchars($row['title']); ?></td>
+                            <td><?php echo htmlspecialchars($row['description']); ?></td>
+                            <td class='image-container'>
+                                <?php
+                                    $imageArray = json_decode($row['image'], true);
+                                    if (!empty($imageArray)) {
+                                        foreach ($imageArray as $image_path) {
+                                            echo "<img src='" . htmlspecialchars($image_path) . "' alt='Recipe Image'>";
+                                        }
+                                    } else {
+                                        echo "No images available";
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <form action="admin_recipe.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe?');" style="display:inline;">
+                                        <input type="hidden" name="recipe_id" value="<?php echo $row['recipeID']; ?>">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button type="submit" class="btn btn-delete">Delete</button>
+                                    </form>
+                                    <a href="edit_recipe.php?id=<?php echo $row['recipeID']; ?>" class="btn btn-edit">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No recipes found.</p>
+        <?php endif; ?>
     </div>
 
     <?php include 'footer.php'; ?>
-    
-    <script>
-        function plusSlides(event, n, btn) {
-            const slideshowContainer = btn.parentNode; // Get the specific slideshow container
-            const slides = slideshowContainer.querySelectorAll('.slide'); // Only get the slides within this container
-            let currentSlide = 0;
-
-            // Find the currently visible slide
-            slides.forEach((slide, index) => {
-                if (slide.style.display !== 'none') {
-                    currentSlide = index;
-                }
-            });
-
-            // Hide all slides in the current container
-            slides.forEach((slide) => {
-                slide.style.display = 'none';
-            });
-
-            // Calculate the next slide index
-            let nextSlide = currentSlide + n;
-            if (nextSlide >= slides.length) nextSlide = 0; // Loop back to first slide
-            if (nextSlide < 0) nextSlide = slides.length - 1; // Loop to last slide
-
-            // Show the next slide
-            slides[nextSlide].style.display = 'block';
-        }
-
-        // Initialize slides on page load for each slideshow
-        document.addEventListener('DOMContentLoaded', () => {
-            const allSlideshows = document.querySelectorAll('.slideshow-container');
-            allSlideshows.forEach((slideshow) => {
-                const slides = slideshow.querySelectorAll('.slide');
-                if (slides.length > 0) {
-                    slides[0].style.display = 'block'; // Show the first slide in each slideshow
-                }
-            });
-        });
-
-    </script>
-
 </body>
 </html>
 

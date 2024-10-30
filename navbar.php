@@ -34,7 +34,7 @@
             </a>
         </li>
         <li>
-            <a href="recipes.php">
+            <a href="member_recipe.php">
                 <div class="icon-box">
                     <i class="fa-solid fa-book"></i>
                     <span>Recipes</span>
