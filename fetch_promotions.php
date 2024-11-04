@@ -1,7 +1,7 @@
 <?php
 include 'databaseconnection.php';
 
-$sql = "SELECT promotion.promotionID, promotion.title, promotion.description, promotion.start_date, promotion.end_date, product.name 
+$sql = "SELECT promotion.promotionID, promotion.title, promotion.description, promotion.start_date, promotion.end_date, product.name , product.image
         FROM promotion 
         JOIN product ON promotion.productID = product.productID";
 

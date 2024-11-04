@@ -21,17 +21,25 @@
             document.getElementById("promotion-detail").innerText = "Promotion not found";
           } else {
             document.getElementById("promotion-detail").innerHTML = `
-          <h2>${detail.title}</h2>
-          <p>${detail.description}</p>
-          <div class="dates">
-            <span>End Date: ${detail.end_date} (<span>Expiring In: <span id="time-remaining"></span></span>)</span>
+          <div class="promotion-detail-title">
+            <h2>${detail.title}</h2>
           </div>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>  
+          <div class="dates">
+            <div class = "promotion-end-date">
+            <p>End Date</p>
+              <span >${detail.end_date}</span>
+            </div>
+            <div class= "promotion-expiry-date">
+            <p>Expiring In</p>
+              <span id="time-remaining"></span>
+            </div>
+          </div>
+          <div class = "promotion-detail-content">
+            <p style="  font-weight: bold;">
+              Description
+            </p>
+            <p>${detail.description}</p>
+          </div>
           <div class="fixed-bottom-button">
             <button class="show-code-btn" onclick="showPromotionCode('${detail.code}')">
               Show Code
