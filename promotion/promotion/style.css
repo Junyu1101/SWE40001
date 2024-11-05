@@ -26,17 +26,34 @@
   gap: 1rem; /* Adds spacing between each promotion item */
   padding: 1rem;
 }
-
-/* Style for each promotion item */
 .promotion-item {
-  background-color: #ccc; /* Light gray background similar to the image */
-  padding: 2rem;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional for subtle shadow */
   cursor: pointer;
-  border-radius: 5px; /* Slightly rounded corners */
-  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.promotion-image {
+  width: 50%; /* Occupy 50% of the container */
+  height: auto; /* Adjust height to maintain aspect ratio */
+  object-fit: contain; /* Ensure the entire image is visible without cropping */
+  border-radius: 5px;
+}
+
+.promotion-text {
+  width: 50%; /* Occupy 50% of the container */
+  font-size: 18px; /* Adjust font size as needed */
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+  padding-left: 15px; /* Space between image and text */
+  text-align: center; /* Center the text within the allocated space */
 }
 
 /* promotion detail style */
@@ -63,35 +80,54 @@
 }
 
 .promotion-detail-container {
-  width: 95%; /* Slightly larger for mobile */
+  width: 100%; /* Slightly larger for mobile */
+  padding-bottom: 100px;
   align-items: center;
+}
+
+.promotion-detail-title {
+  text-align: center;
 }
 
 .promotion-detail {
   width: auto;
-  text-align: center;
-  margin: 20px;
 }
 
 .dates {
   display: flex;
-  justify-content: space-evenly;
-  margin: 20px 0;
+  width: 100%;
 }
 
-.dates span {
-  font-weight: bold;
+.dates p {
+  color: slategrey;
 }
+
+.promotion-end-date,
+.promotion-expiry-date {
+  width: 50%;
+  padding: 15px;
+  padding-bottom: 30px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional for subtle shadow */
+}
+
+.promotion-detail-content {
+  padding: 20px;
+}
+
 /* Position button at the bottom, above the footer */
 .fixed-bottom-button {
-  bottom: 80px; /* Adjust this value to control distance from the bottom */
+  bottom: 60px; /* Adjust this value to control distance from the bottom */
   width: 100%;
   display: flex;
+  position: fixed;
   justify-content: center;
+  background-color: white;
 }
 
 /* Style the button */
 .fixed-bottom-button .show-code-btn {
+  width: 95%;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -149,6 +185,9 @@
 
 /* For mobile responsiveness */
 @media (max-width: 768px) {
+  .promotion-item {
+    width: 95%;
+  }
   .product-name {
     font-size: 1rem;
     flex-grow: 1; /* Ensure the name takes up remaining space */
@@ -164,6 +203,10 @@
   }
 
   .fixed-bottom-button {
-    bottom: 50px; /* Adjust this value to control distance from the bottom */
+    bottom: 0;
+  }
+
+  footer {
+    display: none;
   }
 }
