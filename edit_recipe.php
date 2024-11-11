@@ -17,8 +17,15 @@ if (isset($_GET['id'])) {
 
     // If form is submitted, process the update
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $productID = $_POST['productID'];
         $title = $_POST['title'];
         $description = $_POST['description'];
+
+        // Validate productID as numeric
+        if (empty($productID) || !is_numeric($productID)) {
+            echo "Invalid Product ID.";
+            exit;
+        }
 
         // Handle new image uploads if provided
         if (!empty($_FILES['images']['name'][0])) {
@@ -37,10 +44,10 @@ if (isset($_GET['id'])) {
             $imageJSON = $recipe['image'];  // Retain existing images if none uploaded
         }
 
-        // Update recipe details in the database
-        $sql = "UPDATE recipe SET title = ?, description = ?, image = ? WHERE recipeID = ?";
+        // Update recipe details in the database, including productID
+        $sql = "UPDATE recipe SET productID = ?, title = ?, description = ?, image = ? WHERE recipeID = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssi", $title, $description, $imageJSON, $recipe_id);
+        $stmt->bind_param("isssi", $productID, $title, $description, $imageJSON, $recipe_id);
         if ($stmt->execute()) {
             echo "Recipe updated successfully!";
             header("Location: admin_recipe.php"); // Redirect to the admin page
@@ -71,10 +78,12 @@ if (isset($_GET['id'])) {
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 100px;
         }
 
         .edit-container h1 {
             text-align: center;
+            font-size: 1.8em; /* Adjust font size for mobile */
         }
 
         .form-group {
@@ -84,6 +93,7 @@ if (isset($_GET['id'])) {
         .form-group label {
             display: block;
             font-weight: bold;
+            font-size: 1em; /* Adjust label font size for mobile */
         }
 
         .form-group input[type="text"],
@@ -92,10 +102,12 @@ if (isset($_GET['id'])) {
             padding: 8px;
             border-radius: 4px;
             border: 1px solid #ddd;
+            font-size: 1em; /* Adjust input text size for mobile */
         }
 
         .form-group input[type="file"] {
             padding: 5px;
+            font-size: 1em; /* Adjust file input font size for mobile */
         }
 
         .existing-images img {
@@ -120,7 +132,34 @@ if (isset($_GET['id'])) {
             background-color: #2980b9;
         }
 
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .edit-container {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            .edit-container h1 {
+                font-size: 1.6em;
+            }
+
+            .form-group label {
+                font-size: 0.9em;
+            }
+
+            .form-group input[type="text"],
+            .form-group textarea,
+            .form-group input[type="file"] {
+                font-size: 1em;
+            }
+
+            .btn-submit {
+                font-size: 1.2em;
+                padding: 12px; /* Increase padding for touch devices */
+            }
+        }
     </style>
+
 </head>
 <body>
     <?php include 'header.php'; ?>
@@ -129,13 +168,18 @@ if (isset($_GET['id'])) {
         <h1>Edit Recipe</h1>
         <form action="edit_recipe.php?id=<?php echo $recipe_id; ?>" method="POST" enctype="multipart/form-data">
             <div class="form-group">
+                <label for="productID">Product ID:</label>
+                <input type="text" id="productID" name="productID" value="<?php echo htmlspecialchars($recipe['productID']); ?>" required>
+            </div>
+
+            <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($recipe['title']); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4" required><?php echo htmlspecialchars($recipe['description']); ?></textarea>
+                <textarea id="description" name="description" rows="15" required><?php echo htmlspecialchars($recipe['description']); ?></textarea>
             </div>
 
             <div class="form-group">

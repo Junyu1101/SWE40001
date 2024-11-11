@@ -2,9 +2,28 @@
 // Include the database connection
 include 'databaseconnection.php';
 
-// Fetch all images and captions to display them
-$sql = "SELECT * FROM recipe";
-$result = $conn->query($sql);
+// Fetch categories from the `product` table
+$categoryQuery = "SELECT DISTINCT category FROM product";
+$categoryResult = $conn->query($categoryQuery);
+
+// Get selected category from URL, if set
+$selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
+
+// Fetch all recipes, filtered by the selected category if applicable
+$sql = "SELECT recipe.*, product.category FROM recipe 
+        LEFT JOIN product ON recipe.productID = product.productID";
+
+// Modify SQL if a category is selected
+if (!empty($selectedCategory)) {
+    $sql .= " WHERE product.category = ?";
+}
+
+$stmt = $conn->prepare($sql);
+if (!empty($selectedCategory)) {
+    $stmt->bind_param("s", $selectedCategory);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -20,9 +39,11 @@ $result = $conn->query($sql);
             padding: 20px;
             margin: 20px;
             display: flex;
-            justify-content: center; /* Centers the content horizontally */
+            justify-content: center;
             align-items: center;
-            text-align: center; /* Centers text within the element */
+            text-align: center;
+            flex-direction: column; /* Stack vertically */
+            margin-bottom:0px;
         }
 
         .recipe-top h1 {
@@ -32,15 +53,21 @@ $result = $conn->query($sql);
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
+        }
 
+        /* Category dropdown */
+        .category-filter {
+            margin-top: 20px;
         }
 
         .recipe-full-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
+            justify-content: center; /* Ensure that items are always centered */
+            align-items: flex-start; /* Ensure the items align to the top */
             padding: 20px;
             margin-bottom: 100px;
+            
         }
 
         .recipe {
@@ -50,24 +77,16 @@ $result = $conn->query($sql);
             padding: 20px;
             margin: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-            width: 30%; /* Each recipe takes roughly a third of the row */
+            width: 30%;
             box-sizing: border-box;
             margin-bottom: 20px;
-        }
-
-        .recipe h2 {
-            margin-top: 0;
-        }
-
-        .recipe p {
-            color: #555;
+            text-align: center;
         }
 
         /* Slideshow styles */
         .slideshow-container {
             position: relative;
-            max-width: 600px;
+            max-width: 100%;
             margin: auto;
             overflow: hidden;
         }
@@ -84,17 +103,11 @@ $result = $conn->query($sql);
         }
 
         .slide img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .slide img {
             width: 100%;
-            height: 200px; /* Set a fixed height for all images */
-            object-fit: cover; /* Ensures images fill the area while maintaining aspect ratio */
+            height: 200px;
+            object-fit: cover;
             border-radius: 8px;
         }
-
 
         /* Navigation buttons */
         .prev, .next {
@@ -107,33 +120,52 @@ $result = $conn->query($sql);
             color: white;
             font-weight: bold;
             font-size: 18px;
-            border-radius: 0 3px 3px 0;
             user-select: none;
-        }
-
-        .prev {
-            left: 0;
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .next {
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+        .prev { left: 0; }
+        .next { right: 0; }
+
+        /* Category filter styling */
+        .category-filter {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
+        .category-filter label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .category-filter select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .category-filter select:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: #ffffff;
+        }
+
 
         @media (max-width: 900px) {
-            .recipe {
-                width: 45%; /* Two recipes per row on medium screens */
-            }
+            .recipe { width: 45%; }
         }
 
         @media (max-width: 600px) {
-            .recipe {
-                width: 100%; /* Single column layout on small screens */
-            }
+            .recipe { width: 100%; }
         }
 
-
+        
     </style>
 </head>
 <body>
@@ -141,9 +173,25 @@ $result = $conn->query($sql);
     <?php include 'header.php'; ?>
 
     <div class="recipe-top">
-        <div>
-            <h1>Recipe List: </h1>
-        </div>
+        <h1>Recipe List:</h1>
+        
+        <!-- Category Filter Dropdown -->
+        <form method="GET" class="category-filter">
+            <label for="category">Filter by Category:</label>
+            <select name="category" id="category" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                <?php
+                // Populate dropdown with categories
+                if ($categoryResult->num_rows > 0) {
+                    while ($catRow = $categoryResult->fetch_assoc()) {
+                        $categoryName = $catRow['category'];
+                        $selected = ($categoryName == $selectedCategory) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($categoryName) . "' $selected>" . htmlspecialchars($categoryName) . "</option>";
+                    }
+                }
+                ?>
+            </select>
+        </form>
     </div>
 
     <div class="recipe-full-container">
@@ -152,7 +200,7 @@ $result = $conn->query($sql);
             while ($row = $result->fetch_assoc()) {
                 echo "<a href='recipe_detail.php?recipeID=" . $row['recipeID'] . "' class='recipe-link'>";
                 echo "<div class='recipe'>";
-                
+
                 // Decode image JSON to array
                 $imageArray = json_decode($row['image'], true);
 
@@ -171,11 +219,8 @@ $result = $conn->query($sql);
                 echo "</div>"; // End slideshow
 
                 echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
-                
-
                 echo "</div>"; // End recipe
                 echo "</a>"; // end link to recipe details page
-
             }
         } else {
             echo "<p>No recipes found.</p>";
@@ -187,42 +232,36 @@ $result = $conn->query($sql);
     
     <script>
         function plusSlides(event, n, btn) {
-            const slideshowContainer = btn.parentNode; // Get the specific slideshow container
-            const slides = slideshowContainer.querySelectorAll('.slide'); // Only get the slides within this container
+            const slideshowContainer = btn.parentNode;
+            const slides = slideshowContainer.querySelectorAll('.slide');
             let currentSlide = 0;
 
-            // Find the currently visible slide
             slides.forEach((slide, index) => {
                 if (slide.style.display !== 'none') {
                     currentSlide = index;
                 }
             });
 
-            // Hide all slides in the current container
             slides.forEach((slide) => {
                 slide.style.display = 'none';
             });
 
-            // Calculate the next slide index
             let nextSlide = currentSlide + n;
-            if (nextSlide >= slides.length) nextSlide = 0; // Loop back to first slide
-            if (nextSlide < 0) nextSlide = slides.length - 1; // Loop to last slide
+            if (nextSlide >= slides.length) nextSlide = 0;
+            if (nextSlide < 0) nextSlide = slides.length - 1;
 
-            // Show the next slide
             slides[nextSlide].style.display = 'block';
         }
 
-        // Initialize slides on page load for each slideshow
         document.addEventListener('DOMContentLoaded', () => {
             const allSlideshows = document.querySelectorAll('.slideshow-container');
             allSlideshows.forEach((slideshow) => {
                 const slides = slideshow.querySelectorAll('.slide');
                 if (slides.length > 0) {
-                    slides[0].style.display = 'block'; // Show the first slide in each slideshow
+                    slides[0].style.display = 'block';
                 }
             });
         });
-
     </script>
 
 </body>

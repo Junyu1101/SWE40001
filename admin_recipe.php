@@ -42,11 +42,13 @@ $result = $conn->query($sql);
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 100px;
         }
 
         .recipe-table {
             width: 100%;
             border-collapse: collapse;
+            border-spacing: 0 10px; /* Adds space between rows */
             margin-top: 20px;
         }
 
@@ -62,7 +64,8 @@ $result = $conn->query($sql);
         }
 
         .recipe-table img {
-            max-width: 80px;
+            max-width: 100px; /* restrict image width */
+            height: auto;
             border-radius: 4px;
         }
 
@@ -94,8 +97,57 @@ $result = $conn->query($sql);
 
         .image-container img {
             max-width: 80px;
-            margin-right: 5px;
+            height: auto;
+            margin-bottom: 10px;
             border-radius: 4px;
+        }
+
+        /* Responsive styling for mobile view */
+        @media (max-width: 768px) {
+            .recipe-container {
+                padding: 10px;
+            }
+
+            .recipe-table, .recipe-table th, .recipe-table td {
+                display: block;
+                width: 100%;
+            }
+
+
+            .recipe-table th {
+                display: none; /* Hide table headers on small screens */
+            }
+
+            .recipe-table tr {
+                border: 1px solid #ddd;
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+            .recipe-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .recipe-table td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                flex-basis: 40%;
+            }
+
+            .image-container img {
+                max-width: 60px; /* Smaller width for mobile */
+                height: auto;
+                margin-right: 5px;
+                border-radius: 4px;
+            }
+
+            .btn {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
         }
     </style>
 </head>
@@ -111,6 +163,7 @@ $result = $conn->query($sql);
                 <thead>
                     <tr>
                         <th>Recipe ID</th>
+                        <th>Product ID</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Images</th>
@@ -120,10 +173,12 @@ $result = $conn->query($sql);
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['recipeID']); ?></td>
-                            <td><?php echo htmlspecialchars($row['title']); ?></td>
-                            <td><?php echo htmlspecialchars($row['description']); ?></td>
-                            <td class='image-container'>
+                            <td data-label="Recipe ID"><?php echo htmlspecialchars($row['recipeID']); ?></td>
+                            <td data-label="Product ID"><?php echo htmlspecialchars($row['productID']); ?></td>
+                            <td data-label="Title"><?php echo htmlspecialchars($row['title']); ?></td>
+                            <td data-label="Description"><?php echo htmlspecialchars($row['description']); ?></td>
+
+                            <td data-label="Images" class='image-container'>
                                 <?php
                                     $imageArray = json_decode($row['image'], true);
                                     if (!empty($imageArray)) {
@@ -135,7 +190,7 @@ $result = $conn->query($sql);
                                     }
                                 ?>
                             </td>
-                            <td>
+                            <td data-label="Actions">
                                 <div class="action-buttons">
                                     <form action="admin_recipe.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe?');" style="display:inline;">
                                         <input type="hidden" name="recipe_id" value="<?php echo $row['recipeID']; ?>">
