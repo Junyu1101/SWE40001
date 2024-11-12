@@ -38,7 +38,7 @@
                 <div class="product-info">
                     <h1>' . $product['name'] . '</h1>
                     <p>' . $product['description'] . '</p>
-                    <p class="product-price">$' . $product['price'] . '</p>
+                    <p class="product-price">' . $product['price'] . '</p>
                 </div>';
             } else {
                 echo "<p>Product not found.</p>";
@@ -53,4 +53,5 @@
     ?>
     </div>
 <?php include 'footer.php'; ?>
+
 
