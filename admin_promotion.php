@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $promotion_id);
             if ($stmt->execute()) {
-                echo "Promotion deleted successfully!";
+                // Redirect back to the same page with a success status
+                header("Location: admin_promotion.php?status=deleted");
+                exit();
             } else {
                 echo "Error deleting promotion: " . $conn->error;
             }
@@ -21,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         }
     }
 }
+
 
 // Fetch all promotions from the database
 $sql = "SELECT promotion.promotionID, promotion.title, promotion.description, promotion.start_date, promotion.end_date, promotion.code, product.name AS product_name
@@ -96,8 +99,10 @@ $result = $conn->query($sql);
 
 <body>
     <?php include 'header.php'; ?>
+
     <div class="promotion-container">
         <h1>Promotion Management</h1>
+
         <a href="admin_add_promotion.php" class="btn btn-add">Add New Promotion</a>
 
         <?php if ($result->num_rows > 0): ?>
@@ -147,6 +152,31 @@ $result = $conn->query($sql);
     </div>
 
     <?php include 'footer.php'; ?>
+
+    <script>
+        // Check if the 'status' parameter is set in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+
+        if (status === 'success') {
+            alert("Promotion added successfully!");
+        } else if (status === 'error') {
+            alert("There was an error adding the promotion.");
+        } else if (status === 'updated') {
+            alert("Promotion updated successfully!");
+        } else if (status === 'deleted') {
+            // Show the toast notification for promotion deletion
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+
+            // Hide the toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+    </script>
+
+
 </body>
 
 </html>
