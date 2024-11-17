@@ -2,20 +2,21 @@
 // Include the database connection
 include 'databaseconnection.php';
 
-// Fetch categories from the `product` table
-$categoryQuery = "SELECT DISTINCT category FROM product";
+// Fetch categories from the `categories` table
+$categoryQuery = "SELECT categoryID, categoryName FROM categories";
 $categoryResult = $conn->query($categoryQuery);
 
 // Get selected category from URL, if set
 $selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
 
 // Fetch all recipes, filtered by the selected category if applicable
-$sql = "SELECT recipe.*, product.category FROM recipe 
-        LEFT JOIN product ON recipe.productID = product.productID";
+$sql = "SELECT recipe.*, product.category, categories.categoryName 
+        FROM recipe 
+        LEFT JOIN product ON recipe.productID = product.productID
+        LEFT JOIN categories ON product.category = categories.categoryID";
 
-// Modify SQL if a category is selected
 if (!empty($selectedCategory)) {
-    $sql .= " WHERE product.category = ?";
+    $sql .= " WHERE categories.categoryName = ?";
 }
 
 $stmt = $conn->prepare($sql);
@@ -25,6 +26,7 @@ if (!empty($selectedCategory)) {
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -181,10 +183,10 @@ $result = $stmt->get_result();
             <select name="category" id="category" onchange="this.form.submit()">
                 <option value="">All Categories</option>
                 <?php
-                // Populate dropdown with categories
+                // Populate dropdown with category names from the `categories` table
                 if ($categoryResult->num_rows > 0) {
                     while ($catRow = $categoryResult->fetch_assoc()) {
-                        $categoryName = $catRow['category'];
+                        $categoryName = $catRow['categoryName'];
                         $selected = ($categoryName == $selectedCategory) ? 'selected' : '';
                         echo "<option value='" . htmlspecialchars($categoryName) . "' $selected>" . htmlspecialchars($categoryName) . "</option>";
                     }
@@ -204,8 +206,15 @@ $result = $stmt->get_result();
                 // Decode image JSON to array
                 $imageArray = json_decode($row['image'], true);
 
+                // Check if $imageArray is valid and contains images
+                if (!is_array($imageArray) || empty($imageArray)) {
+                    // If no images, use a placeholder
+                    $imageArray = ["recipe_image/empty.jpg"]; // Replace "placeholder.jpg" with the path to your placeholder image
+                }
+
                 echo "<div class='slideshow-container'>";
                 echo "<div class='slides'>";
+
                 foreach ($imageArray as $image_path) {
                     echo "<div class='slide'>";
                     echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($row['title']) . "'>";

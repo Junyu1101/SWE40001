@@ -221,6 +221,13 @@ $recipe = $result->fetch_assoc();
                 <?php
                 // Decode image JSON to array
                 $imageArray = json_decode($recipe['image'], true);
+
+                // Check if $imageArray is valid and contains images
+                if (!is_array($imageArray) || empty($imageArray)) {
+                // If no images, use a placeholder
+                $imageArray = ["recipe_image/empty.jpg"]; // Replace "placeholder.jpg" with the path to your placeholder image
+                }
+                
                 foreach ($imageArray as $image_path) {
                     echo "<div class='slide'>";
                     echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($recipe['title']) . "'>";
@@ -248,7 +255,7 @@ $recipe = $result->fetch_assoc();
                                 <?php echo htmlspecialchars($recipe['product_name']); ?>
                             </a>
                         </h3>
-                        <p>Price: $<?php echo number_format($recipe['product_price'], 2); ?></p>
+                        <p>Price: <?php echo htmlspecialchars($recipe['product_price']); ?></p>
                     </div>
                 </div>
             <?php endif; ?>
