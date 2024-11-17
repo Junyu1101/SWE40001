@@ -1,11 +1,12 @@
 <?php
+session_start(); // Start session at the top of the page
 // Include the database connection
 include 'databaseconnection.php';
 
 // Check if recipe ID is set in the URL
 if (isset($_GET['id'])) {
     $recipe_id = $_GET['id'];
-
+    
     // Fetch recipe details from the database
     $sql = "SELECT * FROM recipe WHERE recipeID = ?";
     $stmt = $conn->prepare($sql);
@@ -41,7 +42,7 @@ if (isset($_GET['id'])) {
             }
             $imageJSON = json_encode($imageArray);
         } else {
-            $imageJSON = $recipe['image'];  // Retain existing images if none uploaded
+            $imageJSON = $recipe['image']; // Retain existing images if none uploaded
         }
 
         // Update recipe details in the database, including productID
@@ -49,8 +50,8 @@ if (isset($_GET['id'])) {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("isssi", $productID, $title, $description, $imageJSON, $recipe_id);
         if ($stmt->execute()) {
-            echo "Recipe updated successfully!";
-            header("Location: admin_recipe.php"); // Redirect to the admin page
+            $_SESSION['success_message'] = "Recipe updated successfully!"; // Set success message
+            header("Location: edit_recipe.php?id=" . $recipe_id); // Redirect to refresh the page
             exit;
         } else {
             echo "Error updating recipe: " . $conn->error;
@@ -62,6 +63,7 @@ if (isset($_GET['id'])) {
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -158,6 +160,16 @@ if (isset($_GET['id'])) {
                 padding: 12px; /* Increase padding for touch devices */
             }
         }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -166,6 +178,17 @@ if (isset($_GET['id'])) {
 
     <div class="edit-container">
         <h1>Edit Recipe</h1>
+
+        <?php if (isset($_SESSION['success_message'])): ?>
+            <div class="alert success">
+                <?php 
+                echo $_SESSION['success_message']; 
+                unset($_SESSION['success_message']); // Clear the message
+                ?>
+            </div>
+        <?php endif; ?>
+
+
         <form action="edit_recipe.php?id=<?php echo $recipe_id; ?>" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="productID">Product ID:</label>

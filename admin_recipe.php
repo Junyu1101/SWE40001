@@ -9,11 +9,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
         // Validate the recipe ID before deletion
         if (!empty($recipe_id)) {
+            // Step 1: Retrieve image paths from the database
+            $sql = "SELECT image FROM recipe WHERE recipeID = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $recipe_id);
+            $stmt->execute();
+            $stmt->bind_result($image_json);
+            $stmt->fetch();
+            $stmt->close();
+
+            if (!empty($image_json)) {
+                $imageArray = json_decode($image_json, true);
+
+                // Step 2: Delete each image file from the directory
+                foreach ($imageArray as $image_path) {
+                    $full_path = __DIR__ . '/' . $image_path; // Adjust path if necessary
+                    if (file_exists($full_path)) {
+                        unlink($full_path); // Delete the file
+                    }
+                }
+            }
+
+            // Step 3: Delete the recipe record from the database
             $sql = "DELETE FROM recipe WHERE recipeID = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $recipe_id);
             if ($stmt->execute()) {
-                echo "Recipe deleted successfully!";
+                // Redirect back to the same page with a success status
+                header("Location: admin_recipe.php?status=deleted");
+                exit();
             } else {
                 echo "Error deleting recipe: " . $conn->error;
             }
@@ -21,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         }
     }
 }
+
 
 // Fetch all recipes from the database
 $sql = "SELECT * FROM recipe";

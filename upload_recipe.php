@@ -3,25 +3,34 @@ include 'databaseconnection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productID = $_POST['productID'];
-    $title = $_POST['title'];
-    $description = $_POST['description'];
+    $title = htmlspecialchars($_POST['title']);
+    $description = htmlspecialchars($_POST['description']);
     $imagePaths = [];
 
-    // Validate that productID is not empty and is numeric
+    // Validate productID is numeric and exists in the database
     if (empty($productID) || !is_numeric($productID)) {
-        echo "Invalid Product ID.";
+        header("Location: upload_recipe.php?error=InvalidProductID");
         exit;
     }
 
-    // Handle file upload
+    // Handle file uploads
     if (!empty($_FILES['images']['name'][0])) {
         foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
             $image_name = basename($_FILES['images']['name'][$key]);
             $image_path = "recipe_image/" . $image_name;
+            $file_type = mime_content_type($tmp_name);
 
-            if (move_uploaded_file($tmp_name, $image_path)) {
-                // Store image paths in an array
-                $imagePaths[] = $image_path;
+            // Allow only image file types
+            if (in_array($file_type, ['image/jpeg', 'image/png', 'image/gif'])) {
+                if (move_uploaded_file($tmp_name, $image_path)) {
+                    $imagePaths[] = $image_path;
+                } else {
+                    header("Location: upload_recipe.php?error=FileUploadFailed");
+                    exit;
+                }
+            } else {
+                header("Location: upload_recipe.php?error=InvalidFileType");
+                exit;
             }
         }
     }
@@ -29,19 +38,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Convert image paths array to JSON
     $imagesJSON = json_encode($imagePaths);
 
-    // Insert recipe details including productID
+    // Insert recipe details
     $sql = "INSERT INTO recipe (productID, title, description, image) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("isss", $productID, $title, $description, $imagesJSON);
 
     if ($stmt->execute()) {
-        echo "Recipe uploaded successfully!";
+        header("Location: upload_recipe.php?status=success");
+        exit();
     } else {
-        echo "Error uploading recipe: " . $conn->error;
+        header("Location: upload_recipe.php?error=DatabaseError");
+        exit();
     }
+
     $stmt->close();
 }
-
 $conn->close();
 ?>
 
@@ -55,7 +66,7 @@ $conn->close();
     <style>
         .form_h1 {
             text-align: center;
-            font-size: 1.5em; /* Adjust font size for mobile */
+            font-size: 1.5em;
             margin-top: 10px;
         }
 
@@ -66,13 +77,13 @@ $conn->close();
             padding: 20px;
             margin: 20px auto;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            max-width: 500px; /* Center and limit width */
+            max-width: 500px;
         }
 
         .admin-form label {
             display: block;
             margin-bottom: 5px;
-            font-size: 0.9em; /* Adjust font size for labels */
+            font-size: 0.9em;
         }
 
         .admin-form input[type="text"],
@@ -94,38 +105,59 @@ $conn->close();
             border-radius: 4px;
             cursor: pointer;
             font-size: 1em;
-            width: 100%; /* Full width for mobile */
+            width: 100%;
         }
 
         .admin-form input[type="submit"]:hover {
             background-color: #2c3e50;
         }
 
-        /* Responsive styling for mobile view */
+        .success-message {
+            color: green;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
         @media (max-width: 768px) {
             .admin-form {
-                padding: 15px; /* Reduce padding on smaller screens */
+                padding: 15px;
                 margin: 10px;
             }
 
             .form_h1 {
-                font-size: 1.4em; /* Adjust heading size for mobile */
+                font-size: 1.4em;
             }
 
             .admin-form input[type="text"],
             .admin-form textarea,
             .admin-form input[type="file"] {
-                font-size: 0.95em; /* Slightly smaller text size for inputs */
+                font-size: 0.95em;
             }
 
             .admin-form label {
-                font-size: 0.85em; /* Smaller font size for labels */
+                font-size: 0.85em;
             }
         }
     </style>
 </head>
 <body>
     <h1 class="form_h1">Upload Recipe</h1>
+
+    <!-- Display success or error message -->
+    <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
+        <p class="success-message">Recipe uploaded successfully!</p>
+    <?php elseif (isset($_GET['error'])): ?>
+        <p class="error-message"><?php echo htmlspecialchars($_GET['error']); ?></p>
+    <?php endif; ?>
+
     <form action="upload_recipe.php" method="POST" enctype="multipart/form-data" class="admin-form">
         <label for="productID">Product ID:</label>
         <input type="text" name="productID" required><br>
@@ -137,7 +169,7 @@ $conn->close();
         <textarea name="description" required></textarea><br>
 
         <label for="images">Upload Images (multiple allowed):</label>
-        <input type="file" name="images[]" multiple><br>
+        <input type="file" name="images[]" multiple accept="image/jpeg, image/png, image/gif"><br>
 
         <input type="submit" value="Upload">
     </form>
