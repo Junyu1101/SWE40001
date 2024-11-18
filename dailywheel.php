@@ -1,3 +1,22 @@
+<?php
+include 'databaseconnection.php';
+function getRewards($conn) {
+    $sql = "SELECT * FROM daily_wheel";
+    $result = $conn->query($sql);
+    
+    $rewards = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $rewards[] = $row;
+        }
+    }
+    return $rewards;
+}
+
+$rewards = getRewards($conn); // Fetch rewards
+$numRewards = count($rewards);
+?>
+
 <div class="wheelBody">
     <div class="wheel-content">
         <h2 class="wheel-title">Daily Wheel</h2>
@@ -5,14 +24,20 @@
     <div class="wheel-container">
         <div class="wheel-spinBtn">Spin</div>
             <div class="wheel">
-                <div class="wheelNum" style="--i:1; --clr:#db7093;"><span>RM15</span></div>
-                <div class="wheelNum" style="--i:2; --clr:#20b2aa;"><span>RM5</span></div>
-                <div class="wheelNum" style="--i:3; --clr:#d63e92;"><span>Nothing</span></div>
-                <div class="wheelNum" style="--i:4; --clr:#daa520;"><span>RM5</span></div>
-                <div class="wheelNum" style="--i:5; --clr:#ff340f;"><span>RM10</span></div>
-                <div class="wheelNum" style="--i:6; --clr:#ff7f50;"><span>RM5</span></div>
-                <div class="wheelNum" style="--i:7; --clr:#3cb371;"><span>Nothing</span></div>
-                <div class="wheelNum" style="--i:8; --clr:#4169e1;"><span>RM10</span></div>
+                <?php
+
+                    // Loop through each reward and generate the segment
+                    foreach ($rewards as $index => $reward) {
+                        // Get color, name, or value if available, else set defaults
+                        $color = !empty($reward['color']) ? htmlspecialchars($reward['color']) : '#ffffff';
+                        $value = htmlspecialchars($reward['reward_value']);
+                        
+                        
+                        echo "<div class='wheelNum' id='segment-$index' style='--i:$index; --clr:$color;'>";
+                        echo "<span>$value</span>";
+                        echo "</div>";
+                    }
+                ?>
 
             </div>
             
@@ -22,11 +47,19 @@
     <!-- Pop-up Modal -->
     <div class="wheel-popup" id="popup">
         <div class="wheel-popup-content">
-            <h3>Congratulations!</h3>
-            <p>You won a <span id="prize"></span> voucher! Click the button below to claim it!</p>
-            <button class="claim-btn" onclick="closePopup()">Claim Prize</button>
+            <p><span id="prize"></span></p>
+            <span id="memberPopup">
+                <p>Please enter your Member ID and Phone Number to claim your prize:</p>
+                <p><input type="text" id="memberID" placeholder="Member ID" required></p>
+                <p><input type="text" id="phoneNumber" placeholder="Phone Number" required></p>
+            </span>
+            <button class="claim-btn" onclick="handleClaim()"><span id="prizebutton">Claim Prize</span></button>
         </div>
     </div>
+
+  
+            
+
 
 </div>
 
@@ -34,37 +67,103 @@
 let wheel = document.querySelector('.wheel');
 let spinBtn = document.querySelector('.wheel-spinBtn');
 let popup = document.getElementById('popup');
+let memberPopup = document.getElementById('memberPopup');
 let prizeText = document.getElementById('prize');
-let value = Math.ceil(Math.random() * 3600);
+let buttonText = document.getElementById('prizebutton');
+let claimed = false;
+let currentPrize = null;
+
+
+
 
 spinBtn.onclick = function() {
-    wheel.style.transform = "rotate(" + value + "deg)";
-    value += Math.ceil(Math.random() * 3600);
+    claimed = false;
+    let rotationAngle = Math.floor(Math.random() * 3600) + 360;
+    wheel.style.transform = "rotate(" + rotationAngle + "deg)";
 
-    // After the animation ends, show the pop-up
     setTimeout(() => {
-        // Determine the prize based on the random spin
-        let prize = determinePrize(); // You can write this function to determine the prize
-        prizeText.textContent = prize;
+        const finalAngle = rotationAngle % 360;
+        const segmentAngle = 360 / <?php echo $numRewards; ?>;
+        const winningSegment = Math.floor(finalAngle / segmentAngle);
+        const prize = document.querySelector(`#segment-${winningSegment} span`).textContent;
+        //const prize = "Nothing";
 
-        // Show the pop-up
-        popup.classList.add('show');
-    }, 5000); // Assuming the animation duration is 5s
+        currentPrize = prize;
+        
+
+        if (currentPrize === "Nothing") {
+            prizeText.textContent = "You got Nothing. Better luck next time!";
+            buttonText.textContent = "Close";
+            popup.classList.add('show');
+        } else {
+            prizeText.textContent = `You won a ${prize} voucher! Click the button below to claim it!`;
+            buttonText.textContent = "Claim";
+            popup.classList.add('show');
+            memberPopup.classList.add('show');
+        }
+
+        
+    }, 5000);
+};
+
+function handleClaim() {
+    if (!claimed) {
+        if (currentPrize === "Nothing") {
+            closePopup();
+        } else {
+
+            let memberID = document.getElementById('memberID').value;
+            let phoneNumber = document.getElementById('phoneNumber').value;
+
+            if (!memberID || !phoneNumber) {
+                alert('Please fill in both Member ID and Phone Number.');
+                return;
+            }else{
+                // Send AJAX request to check if the member exists
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "check_member.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let response = JSON.parse(xhr.responseText);
+
+                        if (response.status === 'true') {
+                            // If member is found, allow claiming
+                            prizeText.textContent = `Here is your voucher code: ${generateVoucherCode()}`;
+                            console.log(response.message);
+                            buttonText.textContent = "Close";
+                            memberPopup.classList.remove('show');
+                            claimed = true;
+                        } else if (response.message === 'Member exists, but already in user table.'){
+                            prizeText.textContent = "You have already claimed the reward.";
+                            buttonText.textContent = "Close";
+                            claimed = true;
+                        }else{
+                            // If member does not exist
+                            prizeText.textContent = "Invalid Member ID or Phone Number.";
+                            buttonText.textContent = "Claim";
+                            claimed = false;
+                        }
+                    }
+                };
+                xhr.send("memberID=" + encodeURIComponent(memberID) + "&phoneNumber=" + encodeURIComponent(phoneNumber));
+            }
+        }
+    } else {
+        closePopup();
+    }
 }
 
 function closePopup() {
     popup.classList.remove('show');
 }
 
-// Optional: Add your logic to determine the prize based on the spin value
-function determinePrize() {
-    // Example placeholder logic
-    let prizes = ['15', '5', '0', '5', '10', '5', '0', '10'];
-    let randomIndex = Math.floor(Math.random() * prizes.length);
-    return prizes[randomIndex];
+function generateVoucherCode() {
+    return 'VOUCHER-' + Math.floor(1000 + Math.random() * 9000);
 }
 
 </script>
+
 
 
 

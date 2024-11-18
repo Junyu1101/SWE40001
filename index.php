@@ -20,7 +20,9 @@ function fetchData($conn, $table, $limit = 6) {
             if ($promotions->num_rows > 0) {
                 while ($promotion = $promotions->fetch_assoc()) {
                     echo '<div class="showcase-promotion">';
+                    echo '<a href=promotion_detail.php?id=' . htmlspecialchars($promotion['promotionID']) . '>';
                     echo '<h1>' . htmlspecialchars($promotion['title']) . '</h1>';
+                    echo '</a>';
                     echo '</div>';
                 }
             } else {

@@ -177,7 +177,19 @@ $result = $conn->query($sql);
     </style>
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/ccklogo.png" alt="CCK Logo">
+            </div>
+            <div class="login">
+                <a href="logout.php">Logout</a>
+            </div>
+        </div>
+        <div class="navbar-wrapper">
+            <?php include 'admin_navbar.php'; ?>
+        </div>
+    </header>
 
     <div class="recipe-container">
         <h1>Recipe Management</h1>

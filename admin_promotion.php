@@ -40,6 +40,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Promotion Management</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .promotion-container {
             max-width: 1000px;
@@ -98,7 +99,19 @@ $result = $conn->query($sql);
 </head>
 
 <body>
-    <?php include 'header.php'; ?>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/ccklogo.png" alt="CCK Logo">
+            </div>
+            <div class="login">
+                <a href="index.php">Logout</a>
+            </div>
+        </div>
+        <div class="navbar-wrapper">
+            <?php include 'admin_navbar.php'; ?>
+        </div>
+    </header>
 
     <div class="promotion-container">
         <h1>Promotion Management</h1>

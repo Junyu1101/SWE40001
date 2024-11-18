@@ -27,33 +27,6 @@ body {
 }
 
 /* Navbar Styles */
-/* .navbar {
-    background-color: rgb(236, 034, 043);
-    text-align: center;
-    padding: 10px 0;
-}
-
-.navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column; 
-}
-
-.navbar ul li {
-    margin: 5px 0;
-}
-
-.navbar ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-} 
-*/
-
-/* Navbar Styles */
 .navbar-wrapper {
     text-align: center;
     width: 100%; /* Ensure it spans the full width of the viewport */
@@ -147,6 +120,7 @@ footer {
     position: relative;
     bottom: 0;
     width: 100%;
+    z-index: 15;
 }
 
 .footer-content p {
@@ -306,6 +280,10 @@ footer {
     scroll-snap-align: start;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     min-width: 180px;
+}
+
+.showcase-promotion a{
+    text-decoration: none;
 }
 
 .showcase-promotion h1 {
@@ -492,6 +470,14 @@ footer {
 
 .game-card button:hover {
     background-color: rgb(236, 34, 43);
+}
+
+.game-banner1 {
+    width: 100%;
+    background-image: url('images/match3-banner.png');
+    background-size: cover; /* Make sure the image covers the div */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
 }
 
 /* Mobile-Friendly Styles */
@@ -709,16 +695,25 @@ button {
     max-width: 300px;
 }
 
-.popup-content h3 {
+.wheel-popup-content h3 {
     font-size: 1.8em;
     color: rgb(236, 34, 43);
     margin-bottom: 10px;
 }
 
-.popup-content p {
+.wheel-popup-content p {
     font-size: 1.2em;
     color: #333;
     margin-bottom: 20px;
+}
+
+/* Initially hide the member popup */
+.wheel-popup-content #memberPopup {
+    display: none;
+}
+
+.wheel-popup-content #memberPopup.show {
+    display: block;
 }
 
 .claim-btn {
@@ -743,6 +738,7 @@ button {
 /* Product Page */
 /* Wrapper for sidebar and product container */
 .main-container {
+    overflow-x: hidden;
     display: flex;
     align-items: flex-start;
 }
@@ -934,5 +930,115 @@ button {
 
 /*recipe start*/
 
+/* Recipe top */
+.recipe-top {
+    background-color: #ffffff;
+    border: 1px solid #c2c2c2;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recipe-top h1 {
+    margin: 0;
+}
+
+.recipe {
+    background-color: #ffffff;
+    border: 1px solid #c2c2c2;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recipe h2 {
+    margin-top: 0;
+}
+
+.recipe p {
+    color: #555;
+}
+
+/* Slideshow styles */
+.recipe-slideshow-container {
+    position: relative;
+    max-width: 600px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.recipe-slides {
+    display: flex;
+}
+
+.recipe-slide {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.recipe-slide img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+/* Navigation buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.prev {
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.next {
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Delete button */
+.admin-delete-btn {
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .admin-form, .recipe {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .prev, .next {
+        padding: 10px;
+    }
+}
+
 /*end recipe*/
+
 

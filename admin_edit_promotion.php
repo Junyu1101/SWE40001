@@ -1,4 +1,5 @@
 <?php
+include "role_admin_check.php";
 // Include the database connection
 include 'databaseconnection.php';
 

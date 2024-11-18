@@ -20,6 +20,9 @@
             </div>
             <button type="submit">Login</button>
         </form>
+
+        <!-- Sign-up Link -->
+        <p>Not a member? <a href="https://www.cckfm.com.my/V2/Login/Index/?rt=https%3A%2F%2Fwww.cckfm.com.my%2F&unLoginId=1a3901c0-ba0f-4fb8-b4e7-924205b8a856&reason=notlogin&officialShopId=200073&authRedirectType=Default#/">Sign up now!</a></p>
     </div>
 
     <a href="admin_login.php">Admin Login</a>

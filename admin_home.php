@@ -1,4 +1,9 @@
 <!-- admin_home.php -->
+<?php
+include "role_admin_check.php";
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +14,23 @@
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <style>
+        .admin-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Inherit text color from parent */
+        }
+
+        .admin-box {
+            cursor: pointer; /* Show pointer cursor when hovering over the box */
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .admin-box:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+
+    </style>
+
 </head>
 <body>
     <header>
@@ -17,39 +39,50 @@
                 <img src="images/ccklogo.png" alt="CCK Logo">
             </div>
             <div class="login">
-                <a href="index.php">Logout</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
         <div class="navbar-wrapper">
-            <?php include 'navbar.php'; ?>
+            <?php include 'admin_navbar.php'; ?>
         </div>
     </header>
 
-<div class="admin-container">
+    <div class="admin-container">
     <h1>Welcome, Admin!</h1>
     <div class="admin-sections">
-        <div class="admin-box">
-            <h2>Manage Products</h2>
-            <p>View and update product information.</p>
-        </div>
-        <div class="admin-box">
-            <h2>View Users</h2>
-            <p>Monitor registered users and their activity.</p>
-        </div>
-        <div class="admin-box">
-            <h2>Manage Promotions</h2>
-            <p>Update or create new promotional offers.</p>
-        </div>
-        <div class="admin-box">
-            <h2>Manage Recipes</h2>
-            <p>View or update recipes.</p>
-        </div>
-        <div class="admin-box">
-            <h2>Manage Games</h2>
-            <p>Add or remove games.</p>
-        </div>
+        <a href="manage_products.php" class="admin-link">
+            <div class="admin-box">
+                <h2>Manage Products</h2>
+                <p>View and update product information.</p>
+            </div>
+        </a>
+        <a href="manage_users.php" class="admin-link">
+            <div class="admin-box">
+                <h2>View Users</h2>
+                <p>Monitor registered users and their activity.</p>
+            </div>
+        </a>
+        <a href="manage_promotions.php" class="admin-link">
+            <div class="admin-box">
+                <h2>Manage Promotions</h2>
+                <p>Update or create new promotional offers.</p>
+            </div>
+        </a>
+        <a href="admin_recipe.php" class="admin-link">
+            <div class="admin-box">
+                <h2>Manage Recipes</h2>
+                <p>View or update recipes.</p>
+            </div>
+        </a>
+        <a href="manage_games.php" class="admin-link">
+            <div class="admin-box">
+                <h2>Manage Games</h2>
+                <p>Add or remove games.</p>
+            </div>
+        </a>
     </div>
 </div>
+
 
 <br>
 <br>

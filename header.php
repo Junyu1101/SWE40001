@@ -1,3 +1,10 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +25,12 @@
                 </a>
             </div>
             <div class="login">
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'member'): ?>
+                <span>Welcome, <?php echo htmlspecialchars($_SESSION['user']['memberID']); ?></span>
+                <a href="logout.php">Logout</a>
+            <?php else: ?>
                 <a href="member_login.php">Login</a>
+            <?php endif; ?>
             </div>
         </div>
         <div class="navbar-wrapper">
