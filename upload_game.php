@@ -2,22 +2,16 @@
 include 'databaseconnection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $productID = $_POST['productID'];
     $title = htmlspecialchars($_POST['title']);
     $description = htmlspecialchars($_POST['description']);
     $imagePaths = [];
-
-    // Validate productID is numeric and exists in the database
-    if (empty($productID) || !is_numeric($productID)) {
-        header("Location: upload_recipe.php?error=InvalidProductID");
-        exit;
-    }
+    $gameLink = htmlspecialchars($_POST['gameLink']);
 
     // Handle file uploads
     if (!empty($_FILES['images']['name'][0])) {
         foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
             $image_name = basename($_FILES['images']['name'][$key]);
-            $image_path = "recipe_image/" . $image_name;
+            $image_path = "images/" . $image_name;
             $file_type = mime_content_type($tmp_name);
 
             // Allow only image file types
@@ -25,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (move_uploaded_file($tmp_name, $image_path)) {
                     $imagePaths[] = $image_path;
                 } else {
-                    header("Location: upload_recipe.php?error=FileUploadFailed");
+                    header("Location: upload_game.php?error=FileUploadFailed");
                     exit;
                 }
             } else {
-                header("Location: upload_recipe.php?error=InvalidFileType");
+                header("Location: upload_game.php?error=InvalidFileType");
                 exit;
             }
         }
@@ -38,16 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Convert image paths array to JSON
     $imagesJSON = json_encode($imagePaths);
 
-    // Insert recipe details
-    $sql = "INSERT INTO recipe (productID, title, description, image) VALUES (?, ?, ?, ?)";
+    // Insert game details
+    $sql = "INSERT INTO game (title, description, image, gameLink) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isss", $productID, $title, $description, $imagesJSON);
+    $stmt->bind_param("ssss", $title, $description, $imagesJSON, $gameLink);
 
     if ($stmt->execute()) {
-        header("Location: upload_recipe.php?status=success");
+        header("Location: upload_game.php?status=success");
         exit();
     } else {
-        header("Location: upload_recipe.php?error=DatabaseError");
+        header("Location: upload_game.php?error=DatabaseError");
         exit();
     }
 
@@ -61,7 +55,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Recipe</title>
+    <title>Upload Game</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
         .form_h1 {
@@ -165,18 +159,16 @@ $conn->close();
     </style>
 </head>
 <body>
-    <h1 class="form_h1">Upload Recipe</h1>
+    <h1 class="form_h1">Upload Game</h1>
 
     <!-- Display success or error message -->
     <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
-        <p class="success-message">Recipe uploaded successfully!</p>
+        <p class="success-message">Game uploaded successfully!</p>
     <?php elseif (isset($_GET['error'])): ?>
         <p class="error-message"><?php echo htmlspecialchars($_GET['error']); ?></p>
     <?php endif; ?>
 
-    <form action="upload_recipe.php" method="POST" enctype="multipart/form-data" class="admin-form">
-        <label for="productID">Product ID:</label>
-        <input type="text" name="productID" required><br>
+    <form action="upload_game.php" method="POST" enctype="multipart/form-data" class="admin-form">
 
         <label for="title">Title:</label>
         <input type="text" name="title" required><br>
@@ -187,8 +179,12 @@ $conn->close();
         <label for="images">Upload Images (multiple allowed):</label>
         <input type="file" name="images[]" multiple accept="image/jpeg, image/png, image/gif"><br>
 
+        <label for="gameLink">Link:</label>
+        <input type="text" name="gameLink" required></inp><br>
+        
+
         <input type="submit" value="Upload">
-        <input type="button" value="Cancel" onclick="window.location.href='admin_recipe.php';" class="cancel-button">
+        <input type="button" value="Cancel" onclick="window.location.href='admin_game.php';" class="cancel-button">
     </form>
 </body>
 </html>

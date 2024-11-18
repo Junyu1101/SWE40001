@@ -4,42 +4,37 @@ include 'databaseconnection.php';
 
 // Handle delete request
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] == 'delete' && isset($_POST['recipe_id'])) {
-        $recipe_id = $_POST['recipe_id'];
+    if ($_POST['action'] == 'delete' && isset($_POST['game_id'])) {
+        $game_id = $_POST['game_id'];
 
-        // Validate the recipe ID before deletion
-        if (!empty($recipe_id)) {
+        // Validate the game ID before deletion
+        if (!empty($game_id)) {
             // Step 1: Retrieve image paths from the database
-            $sql = "SELECT image FROM recipe WHERE recipeID = ?";
+            $sql = "SELECT image FROM game WHERE gameID = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $recipe_id);
+            $stmt->bind_param("i", $game_id);
             $stmt->execute();
             $stmt->bind_result($image_json);
             $stmt->fetch();
             $stmt->close();
 
             if (!empty($image_json)) {
-                $imageArray = json_decode($image_json, true);
-
-                // Step 2: Delete each image file from the directory
-                foreach ($imageArray as $image_path) {
                     $full_path = __DIR__ . '/' . $image_path; // Adjust path if necessary
                     if (file_exists($full_path)) {
                         unlink($full_path); // Delete the file
                     }
-                }
             }
 
-            // Step 3: Delete the recipe record from the database
-            $sql = "DELETE FROM recipe WHERE recipeID = ?";
+            // Step 3: Delete the game record from the database
+            $sql = "DELETE FROM game WHERE gameID = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $recipe_id);
+            $stmt->bind_param("i", $game_id);
             if ($stmt->execute()) {
                 // Redirect back to the same page with a success status
-                header("Location: admin_recipe.php?status=deleted");
+                header("Location: admin_game.php?status=deleted");
                 exit();
             } else {
-                echo "Error deleting recipe: " . $conn->error;
+                echo "Error deleting game: " . $conn->error;
             }
             $stmt->close();
         }
@@ -47,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 }
 
 
-// Fetch all recipes from the database
-$sql = "SELECT * FROM recipe";
+// Fetch all games from the database
+$sql = "SELECT * FROM game";
 $result = $conn->query($sql);
 ?>
 
@@ -57,11 +52,11 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Recipe Management</title>
+    <title>Admin Game Management</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .recipe-container {
+        .admin-game-container {
             max-width: 1000px;
             margin: 20px auto;
             padding: 20px;
@@ -71,25 +66,25 @@ $result = $conn->query($sql);
             margin-bottom: 100px;
         }
 
-        .recipe-table {
+        .admin-game-table {
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0 10px; /* Adds space between rows */
             margin-top: 20px;
         }
 
-        .recipe-table th, .recipe-table td {
+        .admin-game-table th, .admin-game-table td {
             padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
         }
 
-        .recipe-table th {
+        .admin-game-table th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
 
-        .recipe-table img {
+        .admin-game-table img {
             max-width: 100px; /* restrict image width */
             height: auto;
             border-radius: 4px;
@@ -130,34 +125,34 @@ $result = $conn->query($sql);
 
         /* Responsive styling for mobile view */
         @media (max-width: 768px) {
-            .recipe-container {
+            .admin-game-container {
                 padding: 10px;
             }
 
-            .recipe-table, .recipe-table th, .recipe-table td {
+            .admin-game-table, .admin-game-table th, .admin-game-table td {
                 display: block;
                 width: 100%;
             }
 
 
-            .recipe-table th {
+            .admin-game-table th {
                 display: none; /* Hide table headers on small screens */
             }
 
-            .recipe-table tr {
+            .admin-game-table tr {
                 border: 1px solid #ddd;
                 padding: 10px;
                 border-radius: 5px;
             }
 
-            .recipe-table td {
+            .admin-game-table td {
                 display: flex;
                 justify-content: space-between;
                 padding: 8px;
                 font-size: 14px;
             }
 
-            .recipe-table td:before {
+            .admin-game-table td:before {
                 content: attr(data-label);
                 font-weight: bold;
                 flex-basis: 40%;
@@ -192,27 +187,26 @@ $result = $conn->query($sql);
         </div>
     </header>
 
-    <div class="recipe-container">
-        <h1>Recipe Management</h1>
-        <a href="upload_recipe.php" class="btn btn-edit">Upload New Recipe</a>
+    <div class="admin-game-container">
+        <h1>Game Management</h1>
+        <a href="upload_game.php" class="btn btn-edit">Upload New game</a>
 
         <?php if ($result->num_rows > 0): ?>
-            <table class="recipe-table">
+            <table class="admin-game-table">
                 <thead>
                     <tr>
-                        <th>Recipe ID</th>
-                        <th>Product ID</th>
+                        <th>Game ID</th>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Images</th>
+                        <th>Image</th>
+                        <th>Game Link</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td data-label="Recipe ID"><?php echo htmlspecialchars($row['recipeID']); ?></td>
-                            <td data-label="Product ID"><?php echo htmlspecialchars($row['productID']); ?></td>
+                            <td data-label="Game ID"><?php echo htmlspecialchars($row['gameID']); ?></td>
                             <td data-label="Title"><?php echo htmlspecialchars($row['title']); ?></td>
                             <td data-label="Description"><?php echo htmlspecialchars($row['description']); ?></td>
 
@@ -221,7 +215,7 @@ $result = $conn->query($sql);
                                     $imageArray = json_decode($row['image'], true);
                                     if (!empty($imageArray)) {
                                         foreach ($imageArray as $image_path) {
-                                            echo "<img src='" . htmlspecialchars($image_path) . "' alt='Recipe Image'>";
+                                            echo "<img src='" . htmlspecialchars($image_path) . "' alt='game Image'>";
                                         }
                                     } else {
                                         echo "No images available";
@@ -230,12 +224,12 @@ $result = $conn->query($sql);
                             </td>
                             <td data-label="Actions">
                                 <div class="action-buttons">
-                                    <form action="admin_recipe.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe?');" style="display:inline;">
-                                        <input type="hidden" name="recipe_id" value="<?php echo $row['recipeID']; ?>">
+                                    <form action="admin_game.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this game?');" style="display:inline;">
+                                        <input type="hidden" name="game_id" value="<?php echo $row['gameID']; ?>">
                                         <input type="hidden" name="action" value="delete">
                                         <button type="submit" class="btn btn-delete">Delete</button>
                                     </form>
-                                    <a href="edit_recipe.php?id=<?php echo $row['recipeID']; ?>" class="btn btn-edit">Edit</a>
+                                    <a href="edit_game.php?id=<?php echo $row['gameID']; ?>" class="btn btn-edit">Edit</a>
                                 </div>
                             </td>
                         </tr>
@@ -243,7 +237,7 @@ $result = $conn->query($sql);
                 </tbody>
             </table>
         <?php else: ?>
-            <p>No recipes found.</p>
+            <p>No games found.</p>
         <?php endif; ?>
     </div>
 
