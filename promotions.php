@@ -21,9 +21,12 @@
             const item = document.createElement("div");
             item.className = "promotion-item";
 
+            images = JSON.parse(promotion.image); // Replace `row.image` with your actual data source
+            firstImage = (images && images.length > 0) ? images[0] : 'images/placeholder.jpg';
+
             // Create image element
             const img = document.createElement("img");
-            img.src = promotion.image; // Assuming the image URL is stored in the 'image' field from your database
+            img.src = firstImage; // Assuming the image URL is stored in the 'image' field from your database
             img.alt = promotion.name;  // Alternative text for the image
             img.className = "promotion-image";
 

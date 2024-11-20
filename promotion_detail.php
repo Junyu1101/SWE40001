@@ -52,9 +52,12 @@
             // Set the product name in the header
             document.getElementById("product-name").textContent = detail.name;
 
+            images = JSON.parse(detail.image); // Replace `row.image` with your actual data source
+            firstImage = (images && images.length > 0) ? images[0] : 'images/placeholder.jpg';
+
             // Set the product image and make it clickable
             const productImageElement = document.querySelector(".product-image img");
-            productImageElement.src = `${detail.image}`;
+            productImageElement.src = `${firstImage}`;
             productImageElement.alt = detail.name;
 
             // Make the product image clickable
