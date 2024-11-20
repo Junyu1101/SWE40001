@@ -110,7 +110,7 @@ $result = mysqli_query($conn, $query);
     </header>
 
 <div class="user-container">
-    <h2 class="user-title">User Management</h2>
+    <h2 class="user-title">User List</h2>
 
     <!-- Search Input -->
     <div class="user-search">

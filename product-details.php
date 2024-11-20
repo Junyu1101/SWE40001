@@ -34,15 +34,7 @@
 
             // Display the product details
             echo '<div class="product-image">';
-            if (!empty($images)) {
-                // Display all images
-                foreach ($images as $image) {
-                    echo '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($product['name']) . '">';
-                }
-            } else {
-                // Fallback for products without images
-                echo '<img src="images/placeholder.jpg" alt="No Image Available">';
-            }
+                    echo '<img src="' . htmlspecialchars($product['image']) . '" alt="' . htmlspecialchars($product['name']) . '">';
             echo '</div>';
 
             echo '

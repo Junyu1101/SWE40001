@@ -176,7 +176,7 @@ $conn->close();
         <label for="description">Description:</label>
         <textarea name="description" required></textarea><br>
 
-        <label for="images">Upload Images (multiple allowed):</label>
+        <label for="images">Upload Image:</label>
         <input type="file" name="images[]" multiple accept="image/jpeg, image/png, image/gif"><br>
 
         <label for="gameLink">Link:</label>

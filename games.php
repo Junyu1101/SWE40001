@@ -1,9 +1,17 @@
-<?php include 'header.php'; ?>
+<?php 
+
+include 'databaseconnection.php';
+
+$sql = "SELECT * FROM game";
+$result = $conn->query($sql);
+
+
+include 'header.php'; ?>
 
 <div class="game-container">
-        <h1>Available Games</h1>
+        <!-- <h1>Available Games</h1>
         <div class="game-list">
-            <!-- Example Game Cards -->
+             Example Game Cards 
             <div class="game-card">
                 <img src="images/match3-banner.png" alt="Game 1 Thumbnail">
                 <h3>Match 3</h3>
@@ -17,10 +25,37 @@
                 <p>A brief description of Game 2.</p>
                 <button onclick="playGame('game2')">Play Now</button>
             </div>
-            <!-- More game cards can be added here manually or through an API -->
-        </div>
+             More game cards can be added here manually or through an API
+        </div> -->
+
+        <?php
+        if ($result->num_rows > 0) {
+            echo "<div class='game-list'>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<div class='game-card'>";
+
+                // Decode image JSON to array
+                $imageArray = json_decode($row['image'], true);
+                foreach ($imageArray as $image_path) {
+                    echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($row['title']) . "'>";
+                }
+                echo "<h3>" . htmlspecialchars($row['title']) . "</h3>";
+                echo "<p>" . htmlspecialchars($row['description']) . "</p>";
+                echo "<button onclick=\"playGame('" . htmlspecialchars($row['gameLink']) . "')\">Play Now</button>";
+
+                
+                echo "</div>"; // End of slides
+            }
+            echo "</div>"; //End game-list
+        } else {
+            echo "<p>No games available.</p>";
+        }
+    ?>
+    <br>
 
         <?php include 'dailywheel.php'; ?>
+
+
 
     </div>
 
@@ -45,6 +80,8 @@
             <p>Please enter your Member ID and Phone Number to claim your prize:</p>
             <p><input type="text" id="memberID" placeholder="Member ID" required></p>
             <p><input type="text" id="phoneNumber" placeholder="Phone Number" required></p>
+
+            <a href="https://www.cckfm.com.my/V2/Login/Index/?rt=https%3A%2F%2Fwww.cckfm.com.my%2F&unLoginId=1a3901c0-ba0f-4fb8-b4e7-924205b8a856&reason=notlogin&officialShopId=200073&authRedirectType=Default#/"><p>Not a member? Register now!</p></a>
         </span>
         <button class="claim-btn" onclick="handleClaim()"><span id="prizebutton">Claim Prize</span></button>
     </div>
@@ -104,33 +141,13 @@
     }
 </style>
 
-    <!-- <script>
-    function playGame(gameId) {
-        const gameUrls = {
-            'game1': '../match3-gamever3/index.html',
-            'game2': 'https://cdn-factory.marketjs.com/en/some-other-game-url/index.html'
-        };
-
-        if (gameUrls[gameId]) {
-            window.open(gameUrls[gameId], '_blank');
-        } else {
-            alert("Game not found.");
-        }
-    }
-    </script> -->
-
     <script>
 
     let progressInterval;
     // Function to open the game in a modal
-    function playGame(gameId) {
-        const gameUrls = {
-            'game1': '../match3-gamever4/index.html',
-            'game2': 'https://cdn-factory.marketjs.com/en/some-other-game-url/index.html'
-        };
-
-        if (gameUrls[gameId]) {
-            document.getElementById('gameFrame').src = gameUrls[gameId];
+    function playGame(gameURL) {
+        if (gameURL) {
+            document.getElementById('gameFrame').src = gameURL;
             document.getElementById('gameModal').style.display = 'block';
             trackGameProgress();
         } else {
@@ -212,6 +229,7 @@
                     } else if (response.message === 'Member exists, but already in user table.') {
                         document.getElementById('prize').textContent = "You have already claimed the reward.";
                         document.getElementById('prizebutton').textContent = "Close";
+                        document.getElementById('memberPopup').classList.remove('show');
                         claimed = true;
                     } else {
                         // If member does not exist
@@ -230,6 +248,9 @@
 
     function closePopup() {
         popup.classList.remove('show');
+        // Clear the input fields
+        document.getElementById('memberID').value = "";
+        document.getElementById('phoneNumber').value = "";
     }
 
     function generateVoucherCode() {

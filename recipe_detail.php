@@ -251,7 +251,7 @@ $recipe = $result->fetch_assoc();
                     <?php endif; ?>
                     <div>
                         <h3>
-                            <a href="http://localhost/SWE40001/product-details.php?productID=<?php echo $recipe['product_id']; ?>">
+                            <a href="product-details.php?productID=<?php echo $recipe['product_id']; ?>">
                                 <?php echo htmlspecialchars($recipe['product_name']); ?>
                             </a>
                         </h3>

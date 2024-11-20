@@ -9,6 +9,10 @@ function fetchData($conn, $table, $limit = 6) {
     return $result;
 }
 ?>
+<div class="image-banner">
+    <img src="">
+    <h2></h2>
+</div>
 
 <div class="showcase-container">
     <!-- Promotion Row -->

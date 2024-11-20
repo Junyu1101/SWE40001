@@ -29,7 +29,7 @@ if (isset($_POST['memberID']) && isset($_POST['phoneNumber'])) {
 
             echo json_encode(['status' => 'true', 'message' => 'Member found and added to user table.']); // Successfully added to 'user' table
         } else {
-            echo json_encode(['status' => 'true', 'message' => 'Member exists, but already in user table.']); // Already exists in 'user' table
+            echo json_encode(['status' => 'false', 'message' => 'Member exists, but already in user table.']); // Already exists in 'user' table
         }
     } else {
         echo json_encode(['status' => 'false', 'message' => 'Invalid Member ID or Phone Number.']); // Member not found in 'exist_member'

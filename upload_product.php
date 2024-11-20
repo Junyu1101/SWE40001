@@ -62,11 +62,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Product</title>
-   
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <body>
-<?php include 'header.php'; ?>
+<header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/ccklogo.png" alt="CCK Logo">
+            </div>
+            <div class="login">
+                <a href="logout.php">Logout</a>
+            </div>
+        </div>
+        <div class="navbar-wrapper">
+            <?php include 'admin_navbar.php'; ?>
+        </div>
+</header>
     <h1 class="form_h1">Upload Product</h1>
     <form action="upload_product.php" method="POST" enctype="multipart/form-data" class="admin-form">
         <label for="name">Product Name:</label>
@@ -92,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label for="price">Price:</label>
         <input type="number" name="price" step="0.01" required>
 
-        <label for="images">Upload Images (multiple allowed):</label>
-        <input type="file" name="images[]" multiple required>
+        <label for="images">Upload Image:</label>
+        <input type="file" name="images[]"  required>
 
         <input type="submit" value="Upload">
     </form>

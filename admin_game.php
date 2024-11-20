@@ -222,6 +222,8 @@ $result = $conn->query($sql);
                                     }
                                 ?>
                             </td>
+
+                            <td data-label="Game Link"><?php echo htmlspecialchars($row['gameLink']); ?></td>
                             <td data-label="Actions">
                                 <div class="action-buttons">
                                     <form action="admin_game.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this game?');" style="display:inline;">

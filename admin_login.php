@@ -22,6 +22,6 @@
         </form>
     </div>
 
-    <a href="member_login.php">Member Login</a>
+    <!-- <a href="member_login.php">Member Login</a> !-->
 </body>
 </html>

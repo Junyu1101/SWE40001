@@ -64,7 +64,16 @@
         <img src="images/ccklogo.png" alt="CCK Logo">
       </div>
       <div class="login">
-        <a href="login.php">Login</a>
+      <?php 
+      if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+      }
+      if (isset($_SESSION['role']) && $_SESSION['role'] == 'member'): ?>
+                <span>Welcome, <?php echo htmlspecialchars($_SESSION['user']['memberID']); ?></span>
+                <a href="logout.php">Logout</a>
+            <?php else: ?>
+                <a href="member_login.php">Login</a>
+            <?php endif; ?>
       </div>
     </div>
   </header>

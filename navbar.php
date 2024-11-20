@@ -1,11 +1,3 @@
-<!-- <nav class="navbar">
-    <ul>
-        <li><a href="promotion.php">Promotion</a></li>
-        <li><a href="product.php">Product</a></li>
-        <li><a href="games.php">Games</a></li>
-        <li><a href="recipe.php">Recipe</a></li>
-    </ul>
-</nav> -->
 
 <nav class="navbar">
     <ul>

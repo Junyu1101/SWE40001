@@ -59,7 +59,7 @@
 
             // Make the product image clickable
             const productLinkElement = document.getElementById("product-link");
-            productLinkElement.href = `product-detail.php?id=${detail.productID}`;
+            productLinkElement.href = `product-details.php?productID=${detail.productID}`;
           }
         });
     }

@@ -1,5 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE && basename($_SERVER['PHP_SELF']) !== 'recipe_detail.php') {
     session_start();
 }
 
@@ -29,7 +29,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <span>Welcome, <?php echo htmlspecialchars($_SESSION['user']['memberID']); ?></span>
                 <a href="logout.php">Logout</a>
             <?php else: ?>
-                <a href="member_login.php">Login</a>
+                <a href="admin_login.php">Login</a>
             <?php endif; ?>
             </div>
         </div>

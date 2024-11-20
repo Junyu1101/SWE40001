@@ -50,19 +50,19 @@ include "role_admin_check.php";
     <div class="admin-container">
     <h1>Welcome, Admin!</h1>
     <div class="admin-sections">
-        <a href="manage_products.php" class="admin-link">
+        <a href="admin_product.php" class="admin-link">
             <div class="admin-box">
                 <h2>Manage Products</h2>
                 <p>View and update product information.</p>
             </div>
         </a>
-        <a href="manage_users.php" class="admin-link">
+        <a href="admin_users.php" class="admin-link">
             <div class="admin-box">
                 <h2>View Users</h2>
                 <p>Monitor registered users and their activity.</p>
             </div>
         </a>
-        <a href="manage_promotions.php" class="admin-link">
+        <a href="admin_promotion.php" class="admin-link">
             <div class="admin-box">
                 <h2>Manage Promotions</h2>
                 <p>Update or create new promotional offers.</p>
@@ -74,7 +74,7 @@ include "role_admin_check.php";
                 <p>View or update recipes.</p>
             </div>
         </a>
-        <a href="manage_games.php" class="admin-link">
+        <a href="admin_game.php" class="admin-link">
             <div class="admin-box">
                 <h2>Manage Games</h2>
                 <p>Add or remove games.</p>
