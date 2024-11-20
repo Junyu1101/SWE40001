@@ -50,11 +50,12 @@
                 while ($row = $result->fetch_assoc()) {
                     // Decode the JSON image field
                     $images = json_decode($row['image'], true);
+                    $firstImage = !empty($images) ? $images[0] : 'images/placeholder.jpg'; // Use a placeholder image if no images available
 
                     echo '
                     <div class="product-item">
                         <a href="product-details.php?productID=' . $row['productID'] . '">
-                            <img src="' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['name']) . '">
+                            <img src="' . htmlspecialchars($firstImage) . '" alt="' . htmlspecialchars($row['name']) . '">
                             <p>' . htmlspecialchars($row['name']) . '</p>
                             <p>RM' . htmlspecialchars($row['price']) . '</p>
                         </a>

@@ -73,8 +73,12 @@ function fetchData($conn, $table, $limit = 6) {
             $products = fetchData($conn, 'product');
             if ($products->num_rows > 0) {
                 while ($product = $products->fetch_assoc()) {
+
+                    $images = json_decode($product['image'], true);
+                    $firstImage = !empty($images) ? $images[0] : 'images/placeholder.jpg'; // Use a placeholder image if no images available
+
                     echo '<div class="showcase-item">';
-                    echo '<img src="' . htmlspecialchars($product['image']) . '" alt="' . htmlspecialchars($product['name']) . '">';
+                    echo '<img src="' . htmlspecialchars($firstImage) . '" alt="' . htmlspecialchars($product['name']) . '">';
                     echo '<h1>' . htmlspecialchars($product['name']) . '</h1>';
                     echo '<p>RM ' . number_format($product['price'], 2) . '</p>';
                     echo '</div>';
