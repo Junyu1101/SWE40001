@@ -118,6 +118,8 @@ function handleWheelClaim() {
 
             let memberID = document.getElementById('memberID').value;
             let phoneNumber = document.getElementById('phoneNumber').value;
+            let currentDate = new Date().toISOString().slice(0, 10); // Get the current date in YYYY-MM-DD format
+            let gameID = ''; // Replace with the actual game ID logic, if necessary
 
             if (!memberID || !phoneNumber) {
                 alert('Please fill in both Member ID and Phone Number.');
@@ -125,33 +127,53 @@ function handleWheelClaim() {
             }else{
                 // Send AJAX request to check if the member exists
                 let xhr = new XMLHttpRequest();
-                xhr.open("POST", "check_member.php", true);
+                xhr.open("POST", "claim.php", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         let response = JSON.parse(xhr.responseText);
 
                         if (response.status === 'true') {
-                            // If member is found, allow claiming
-                            prizeText.textContent = `Here is your voucher code: ${generateVoucherCode()}`;
-                            console.log(response.message);
-                            buttonText.textContent = "Close";
-                            memberPopup.classList.remove('show');
-                            claimed = true;
-                        } else if (response.message === 'Member exists, but already in user table.'){
-                            prizeText.textContent = "You have already claimed the reward.";
-                            buttonText.textContent = "Close";
-                            memberPopup.classList.remove('show');
-                            claimed = true;
-                        }else{
-                            // If member does not exist
+                            // If member is found and the claim is successful
+                            switch (response.message) {
+                                case 'Claim successful.':
+                                    prizeText.textContent = `Here is your voucher code: ${generateVoucherCode()}`;
+                                    console.log(response.message);
+                                    buttonText.textContent = "Close";
+                                    memberPopup.classList.remove('show');
+                                    claimed = true;
+                                    break;
+
+                                case 'Claim already made today.':
+                                    prizeText.textContent = "You have already claimed the reward today.";
+                                    console.log(response.message);
+                                    buttonText.textContent = "Close";
+                                    memberPopup.classList.remove('show');
+                                    claimed = true;
+                                    break;
+
+                                default:
+                                    // Handle unexpected success message
+                                    prizeText.textContent = "Unexpected response. Please try again.";
+                                    console.log(response.message);
+                                    buttonText.textContent = "Retry";
+                                    claimed = false;
+                                    break;
+                            }
+
+                        } else {
+                            // If member does not exist or claim fails
                             prizeText.textContent = "Invalid Member ID or Phone Number.";
+                            console.log(response.message);
                             buttonText.textContent = "Claim";
                             claimed = false;
                         }
                     }
                 };
-                xhr.send("memberID=" + encodeURIComponent(memberID) + "&phoneNumber=" + encodeURIComponent(phoneNumber));
+                xhr.send("memberID=" + encodeURIComponent(memberID) + 
+                        "&phoneNumber=" + encodeURIComponent(phoneNumber) + 
+                        "&currentDate=" + encodeURIComponent(currentDate) +
+                        "&gameID=" + encodeURIComponent(gameID));
             }
         }
     } else {

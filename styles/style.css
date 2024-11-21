@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff;
+    background-color: #FFF5E1;
 }
 
 /* Header Styles */
@@ -13,6 +13,18 @@ body {
     align-items: center;
     background-color: rgb(254, 193, 016);
     padding: 10px 20px;
+}
+
+/* Banners */
+.image-banner {
+    width: 100%;
+    overflow: hidden;
+}
+
+.image-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 
@@ -113,12 +125,12 @@ body {
 
 
 /* Footer Styles */
+/* Footer Always at Bottom */
 footer {
-    background-color: rgb(254, 193, 016);
+    margin-top: auto; /* Push footer to the bottom if content is short */
+    background-color: rgb(254, 193, 16);
     text-align: center;
     padding: 20px 0;
-    position: relative;
-    bottom: 0;
     width: 100%;
     z-index: 15;
 }
@@ -191,6 +203,7 @@ footer {
     max-width: 1000px; /* Limit for larger screens */
     margin: 0 auto;
     padding: 20px 0;
+    background-color: #FFF5E1;
 }
 
 .showcase-row {
@@ -432,7 +445,7 @@ footer {
 
 /* Game card styles */
 .game-card {
-    background-color: white;
+    background-color: gray;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 200px;
@@ -454,7 +467,7 @@ footer {
 
 .game-card p {
     font-size: 14px;
-    color: rgb(236, 34, 43);
+    color: rgb(255, 255, 255);
 }
 
 .game-card button {
@@ -677,13 +690,16 @@ button {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    margin: 0; /* Ensure no unintended margin */
+    padding: 0; /* Ensure no unintended padding */  
     background: rgba(0, 0, 0, 0.7);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 20;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 .wheel-popup-content {
@@ -693,6 +709,7 @@ button {
     text-align: center;
     width: 80%;
     max-width: 300px;
+    box-sizing: border-box;
 }
 
 .wheel-popup-content h3 {
@@ -735,6 +752,7 @@ button {
     display: flex;
 }
 
+/* Product Page */
 /* Main container for sidebar and products */
 .main-container {
     display: flex; /* Use flexbox for side-by-side layout */
@@ -824,6 +842,7 @@ button {
     text-decoration: none;
 }
 
+
 /* Responsive Layout */
 @media (max-width: 768px) {
     .main-container {
@@ -912,88 +931,89 @@ button {
                 font-size: 20px;
             }
         }
+
 /*Admin Product start*/
-        .admin-product-container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+.admin-product-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        .product-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-        .product-table th, .product-table td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
+.product-table th, .product-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
 
-        .product-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
+.product-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
 
-        .product-table img {
-            max-width: 80px;
-            max-height: 80px;
-            border-radius: 4px;
-        }
+.product-table img {
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 4px;
+}
 
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
 
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-        .btn-delete {
-            background-color: #f44336;
-            color: white;
-        }
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+}
 
-        .btn-edit {
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            padding: 5px 15px;
-        }
+.btn-edit {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 5px 15px;
+}
 
-        .btn-edit:hover, .btn-delete:hover {
-            opacity: 0.8;
-        }
+.btn-edit:hover, .btn-delete:hover {
+    opacity: 0.8;
+}
 /*Admin product end*/
 
 /*Upload Product & Recipe*/
 
 .form_h1 {
-    text-align: center;
+text-align: center;
 }
 
 .admin-form {
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px auto;
-    width: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+background-color: #ffffff;
+border: 1px solid #dddddd;
+border-radius: 8px;
+padding: 20px;
+margin: 20px auto;
+width: 50%;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .admin-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
 }
 
 .admin-form input[type="text"],
@@ -1001,44 +1021,44 @@ button {
 .admin-form input[type="file"],
 .admin-form input[type="number"],
 .admin-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #dddddd;
+border-radius: 4px;
 }
 
 .admin-form input[type="submit"] {
-    background-color: #35424a;
-    color: #ffffff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
+background-color: #35424a;
+color: #ffffff;
+border: none;
+padding: 10px 15px;
+border-radius: 4px;
+cursor: pointer;
 }
 
 .admin-form input[type="submit"]:hover {
-    background-color: #2c3e50;
+background-color: #2c3e50;
 }
 
 /*Upload Product & Recipe End*/
 
 /*Flash Messages Start*/
 .flash-message.success {
-    color: green;
-    background-color: #d4edda;
-    padding: 10px;
-    border: 1px solid #c3e6cb;
-    border-radius: 4px;
-    margin-bottom: 10px;
+color: green;
+background-color: #d4edda;
+padding: 10px;
+border: 1px solid #c3e6cb;
+border-radius: 4px;
+margin-bottom: 10px;
 }
 .flash-message.error {
-    color: red;
-    background-color: #f8d7da;
-    padding: 10px;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    margin-bottom: 10px;
+color: red;
+background-color: #f8d7da;
+padding: 10px;
+border: 1px solid #f5c6cb;
+border-radius: 4px;
+margin-bottom: 10px;
 }
 /*Flash Messages End*/
 
@@ -1158,3 +1178,79 @@ button {
 /*end recipe*/
 
 
+/* Test Index */
+
+
+/* Static Icon */
+.static-icon {
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.static-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Pop-Up Styles */
+.home-popup {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.popup-content p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    background: #ff4040; /* Bright red for visibility */
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
