@@ -27,6 +27,12 @@ body {
     display: block;
 }
 
+.index-banner-container {
+    padding: 10px 0;
+    width: 100%;
+    max-width: 100%;
+}
+
 
 .logo img {
     max-width: 120px; /* Reduce size for mobile */
@@ -199,15 +205,16 @@ footer {
 
 /* Showcase Styles */
 .showcase-container {
-    width: 95%; /* Slightly larger for mobile */
+    width: 100%; /* Slightly larger for mobile */
     max-width: 1000px; /* Limit for larger screens */
     margin: 0 auto;
     padding: 20px 0;
-    background-color: #FFF5E1;
+    background-color: rgb(254, 193, 016);
 }
 
 .showcase-row {
     margin-bottom: 30px;
+    
 }
 
 .showcase-row h2 {
@@ -234,12 +241,13 @@ footer {
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     gap: 10px;
+    padding: 10px 15px;
+    background-color: white;
 }
 
 .showcase-item {
     flex: 0 0 auto;
     width: 200px;
-    background-color: rgb(254, 193, 016);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -280,6 +288,8 @@ footer {
 .showcase-slider {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+    padding: 0 10px;
+    margin: 0 10px;
 }
 
 /* Promotion Styles */

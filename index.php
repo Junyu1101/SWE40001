@@ -9,9 +9,18 @@ function fetchData($conn, $table, $limit = 6) {
     return $result;
 }
 ?>
-<div class="image-banner">
-    <img src="">
-    <h2></h2>
+<?php include 'dailywheel.php'; ?>
+
+<div class="index-banner-container">
+    <div class="image-banner">
+        <a href="games.php"><img src="images/game-banner.png"></a>
+
+    </div>
+
+    <div class="image-banner">
+        <a href="https://www.cckfm.com.my/V2/Login/Index/?rt=https%3A%2F%2Fwww.cckfm.com.my%2F&unLoginId=1a3901c0-ba0f-4fb8-b4e7-924205b8a856&reason=notlogin&officialShopId=200073&authRedirectType=Default#/"><img src="images/register-banner.jpg"></a>
+
+    </div>
 </div>
 
 <div class="showcase-container">
@@ -92,6 +101,7 @@ function fetchData($conn, $table, $limit = 6) {
 </div>
 
 <br><br><br>
+
 
 <?php 
 include 'footer.php'; 
