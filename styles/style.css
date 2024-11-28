@@ -1254,3 +1254,71 @@ margin-bottom: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
 }
+
+/* Popup styles */
+.game-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.game-popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+.game-popup-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-popup-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.game-popup-retry {
+    background: #f44336;
+    color: white;
+}
+
+.game-popup-claim {
+    background: #4CAF50;
+    color: white;
+}
+
+.game-claim-section {
+    display: none;
+    margin-top: 20px;
+}
+
+.game-member-input {
+    display: none;
+}
+
+.game-claim-section input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.game-prize-message {
+    font-weight: bold;
+    text-align: center;
+}

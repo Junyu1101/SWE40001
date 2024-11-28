@@ -8,26 +8,11 @@ $result = $conn->query($sql);
 
 include 'header.php'; ?>
 
+<br>
+<br>
+
+
 <div class="game-container">
-        <!-- <h1>Available Games</h1>
-        <div class="game-list">
-             Example Game Cards 
-            <div class="game-card">
-                <img src="images/match3-banner.png" alt="Game 1 Thumbnail">
-                <h3>Match 3</h3>
-                <p>A game where you swap tiles to match and score! Earn at least 300 points to get a reward!</p>
-                <button onclick="playGame('game1')">Play Now</button>
-            </div>
-
-            <div class="game-card">
-                <img src="path/to/game2-thumbnail.jpg" alt="Game 2 Thumbnail">
-                <h3>Game 2</h3>
-                <p>A brief description of Game 2.</p>
-                <button onclick="playGame('game2')">Play Now</button>
-            </div>
-             More game cards can be added here manually or through an API
-        </div> -->
-
         <?php
         if ($result->num_rows > 0) {
             echo "<div class='game-list'>";
@@ -72,18 +57,29 @@ include 'header.php'; ?>
     </div>
 </div>
 
-<!-- Pop-up Modal for Prize Claim -->
-<div class="wheel-popup" id="popup">
-    <div class="wheel-popup-content">
-        <p><span id="prize"></span></p>
-        <span id="memberPopup">
-            <p>Please enter your Member ID and Phone Number to claim your prize:</p>
-            <p><input type="text" id="memberID" placeholder="Member ID" required></p>
-            <p><input type="text" id="phoneNumber" placeholder="Phone Number" required></p>
+<!-- Prize Pop-up Modal -->
+<div id="gamePopup" class="game-popup">
+    <div class="game-popup-content">
+        <div id="gamePrizeSection">
+            <p>You won </p>
+            <span id="gamePrizeMessage" class="game-prize-message"></span>
+            <div class="game-popup-buttons">
+                <button class="game-popup-retry" onclick="location.reload()">Retry</button>
+                <button class="game-popup-claim" onclick="gameShowClaimForm()">Claim</button>
+            </div>
+        </div>
 
+        
+        <div id="gameClaimSection" class="game-claim-section">
+            <p id="submit-result"></p>
+            <div id="gameMemberInput" class="game-member-input">
+            <p>Enter your Member ID and Phone Number to claim your prize:</p>
+            <input type="text" id="gameMemberID" placeholder="Member ID" required>
+            <input type="text" id="gamePhoneNumber" placeholder="Phone Number" required>
             <a href="https://www.cckfm.com.my/V2/Login/Index/?rt=https%3A%2F%2Fwww.cckfm.com.my%2F&unLoginId=1a3901c0-ba0f-4fb8-b4e7-924205b8a856&reason=notlogin&officialShopId=200073&authRedirectType=Default#/"><p>Not a member? Register now!</p></a>
-        </span>
-        <button class="claim-btn" onclick="handleClaim()"><span id="prizebutton">Claim Prize</span></button>
+            </div>
+            <button onclick="gameHandleClaim()" id="game-submit-btn">Submit</button>
+        </div>
     </div>
 </div>
 
@@ -139,9 +135,29 @@ include 'header.php'; ?>
         width: 100%;
         height: 20px;
     }
+
+    
 </style>
 
     <script>
+    const gamePopup = document.getElementById('gamePopup');
+    const gamePrizeSection = document.getElementById('gamePrizeSection');
+    const gameClaimSection = document.getElementById('gameClaimSection');
+    const gameMemberInput = document.getElementById('gameMemberInput');
+    const gamePrizeMessage = document.getElementById('gamePrizeMessage');
+    const submitBtn = document.getElementById('game-submit-btn');
+    const resultText = document.getElementById('submit-result');
+
+    // Array of rewards
+    const rewards = [
+        "10% discount on your next purchase!",
+        "Buy 1 Get 1 Free offer!",
+        "RM10 off on orders above RM50!",
+        "Exclusive 15% discount on selected items!"
+    ];
+
+    // Select a random reward from the list
+    const randomReward = rewards[Math.floor(Math.random() * rewards.length)];
 
     let progressInterval;
     // Function to open the game in a modal
@@ -159,6 +175,7 @@ include 'header.php'; ?>
     function closeGame() {
         document.getElementById('gameModal').style.display = 'none';
         document.getElementById('gameFrame').src = ''; // Reset iframe src
+        
 
         if (progressInterval) {
             clearInterval(progressInterval); // Stop tracking progress when game closes
@@ -181,7 +198,7 @@ include 'header.php'; ?>
                 document.getElementById('progressText').textContent = `${gameScore} / 300`;
 
                 if (gameScore >= 300) {
-                    showPrizeModal();
+                    gameShowPrizePopup();
                     window.removeEventListener('message', gameScoreListener); // Stop listening for game score updates
                 }
             }
@@ -190,21 +207,27 @@ include 'header.php'; ?>
         window.addEventListener('message', gameScoreListener);
     }
 
-    // Function to show the modal popup
-    function showPrizeModal() {
-        // Show the modal and set the prize text
-        document.getElementById('popup').classList.add('show');
-        document.getElementById('prize').textContent = 'Congratulations! You\'ve earned the reward!';
-        document.getElementById('prizebutton').textContent = 'Claim Prize';
-
-        // You can adjust this logic to set any prize or additional info
-        document.getElementById('memberPopup').classList.add('show');
+    // Show the prize popup
+    function gameShowPrizePopup() {
+        gamePopup.style.display = 'flex';
+        gamePrizeSection.style.display = 'block';
+        gameClaimSection.style.display = 'none';
+        gameMemberInput.style.display = 'block';
+        gamePrizeMessage.textContent = `${randomReward}`;
     }
 
-    function handleClaim() {
+    // Show the claim form
+    function gameShowClaimForm() {
+        gamePrizeSection.style.display = 'none';
+        gameClaimSection.style.display = 'block';
+    }
+
+    function gameHandleClaim() {
         if (!claimed){
-            let memberID = document.getElementById('memberID').value;
-            let phoneNumber = document.getElementById('phoneNumber').value;
+            let memberID = document.getElementById('gameMemberID').value;
+            let phoneNumber = document.getElementById('gamePhoneNumber').value;
+            let currentDate = new Date().toISOString().slice(0, 10); // Get the current date in YYYY-MM-DD format
+            let gameID = ''; // Replace with the actual game ID logic, if necessary
 
             if (!memberID || !phoneNumber) {
                 alert('Please fill in both Member ID and Phone Number.');
@@ -213,33 +236,53 @@ include 'header.php'; ?>
 
             // Send AJAX request to check if the member exists
             let xhr = new XMLHttpRequest();
-            xhr.open("POST", "check_member.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    let response = JSON.parse(xhr.responseText);
+                xhr.open("POST", "claim.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let response = JSON.parse(xhr.responseText);
 
-                    if (response.status === 'true') {
-                        // If member is found, allow claiming
-                        document.getElementById('prize').textContent = `Here is your voucher code: ${generateVoucherCode()}`;
-                        console.log(response.message);
-                        document.getElementById('prizebutton').textContent = "Close";
-                        document.getElementById('memberPopup').classList.remove('show');
-                        claimed = true;
-                    } else if (response.message === 'Member exists, but already in user table.') {
-                        document.getElementById('prize').textContent = "You have already claimed the reward.";
-                        document.getElementById('prizebutton').textContent = "Close";
-                        document.getElementById('memberPopup').classList.remove('show');
-                        claimed = true;
-                    } else {
-                        // If member does not exist
-                        document.getElementById('prize').textContent = "Invalid Member ID or Phone Number.";
-                        document.getElementById('prizebutton').textContent = "Claim Prize";
-                        claimed = false;
+                        if (response.status === 'true') {
+                            // If member is found and the claim is successful
+                            switch (response.message) {
+                                case 'Claim successful.':
+                                    resultText.textContent = `Here is your voucher code: ${generateVoucherCode()}`;
+                                    console.log(response.message);
+                                    submitBtn.textContent = "Close";
+                                    gameMemberInput.style.display = 'none';
+                                    claimed = true;
+                                    break;
+
+                                case 'Claim already made today.':
+                                    resultText.textContent = "You have already claimed the reward today.";
+                                    console.log(response.message);
+                                    submitBtn.textContent = "Close";
+                                    gameMemberInput.style.display = 'none';
+                                    claimed = true;
+                                    break;
+
+                                default:
+                                    // Handle unexpected success message
+                                    resultText.textContent = "Unexpected response. Please try again.";
+                                    console.log(response.message);
+                                    submitBtn.textContent = "Retry";
+                                    claimed = false;
+                                    break;
+                            }
+
+                        } else {
+                            // If member does not exist or claim fails
+                            resultText.textContent = "Invalid Member ID or Phone Number.";
+                            console.log(response.message);
+                            submitBtn.textContent = "Claim";
+                            claimed = false;
+                        }
                     }
-                }
-            };
-            xhr.send("memberID=" + encodeURIComponent(memberID) + "&phoneNumber=" + encodeURIComponent(phoneNumber));
+                };
+                xhr.send("memberID=" + encodeURIComponent(memberID) + 
+                        "&phoneNumber=" + encodeURIComponent(phoneNumber) + 
+                        "&currentDate=" + encodeURIComponent(currentDate) +
+                        "&gameID=" + encodeURIComponent(gameID));
         }else{
             closePopup();
         }
@@ -247,10 +290,11 @@ include 'header.php'; ?>
     }
 
     function closePopup() {
-        popup.classList.remove('show');
+        gamePopup.style.display = 'none';
         // Clear the input fields
-        document.getElementById('memberID').value = "";
-        document.getElementById('phoneNumber').value = "";
+        document.getElementById('gameMemberID').value = "";
+        document.getElementById('gamePhoneNumber').value = "";
+
     }
 
     function generateVoucherCode() {
