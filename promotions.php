@@ -56,35 +56,17 @@
 </head>
 
 <body>
-  <header>
-    <div class="header-container">
-      <div class="backicon">
-        <a href="index.php">
-          <i class="fa-sharp fa-solid fa-angle-left"></i>
-        </a>
-      </div>
-      <div class="logo">
-        <img src="images/ccklogo.png" alt="CCK Logo">
-      </div>
-      <div class="login">
-      <?php 
-      if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-      }
-      if (isset($_SESSION['role']) && $_SESSION['role'] == 'member'): ?>
-                <span>Welcome, <?php echo htmlspecialchars($_SESSION['user']['memberID']); ?></span>
-                <a href="logout.php">Logout</a>
-            <?php else: ?>
-                <a href="member_login.php">Login</a>
-            <?php endif; ?>
-      </div>
-    </div>
-  </header>
+<header>
+        <div class="header-container">
+            <div class="login">
+                <a href="admin_login.php">Login</a>
+            </div>
+        </div>
+        <div class="navbar-wrapper">
+            <?php include 'navbar.php'; ?>
+        </div>
+    </header>
   <div class="promotions-list" id="promotions-list"></div>
 
+  <script src="scripts/navbar-script.js"></script>
   <?php include 'footer.php'; ?>
-</body>
-
-
-
-</html>

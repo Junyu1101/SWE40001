@@ -2,6 +2,14 @@
 <nav class="navbar">
     <ul>
         <li>
+            <a href="index.php">
+                <div class="icon-box">
+                <img src="images/ccklogo.png" alt="CCK logo">
+                    <span>Home</span>
+                </div>
+            </a>
+        </li>
+        <li>
             <a href="promotions.php">
                 <div class="icon-box">
                 <i class="fa-solid fa-bullhorn"></i>

@@ -12,7 +12,8 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: rgb(254, 193, 016);
-    padding: 10px 20px;
+    padding: 0px 15px;
+    height: 48px;
 }
 
 /* Banners */
@@ -34,9 +35,8 @@ body {
 }
 
 
-.logo img {
-    max-width: 120px; /* Reduce size for mobile */
-}
+
+
 
 .login a {
     text-decoration: none;
@@ -44,19 +44,21 @@ body {
     font-weight: bold;
 }
 
-/* Navbar Styles */
+/* Navbar Styles 
 .navbar-wrapper {
     text-align: center;
-    width: 100%; /* Ensure it spans the full width of the viewport */
-}
+    width: 100%;  
+}*/
 
 .navbar {
-    background-color: rgb(236, 034, 043);
-    padding: 15px 20px;
-    border-radius: 10px;
-    display: inline-block;
-    margin: 0 auto;
-    width: auto;
+    background-color: rgb(255, 255, 255);
+    padding: 5px 0;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    z-index: 30;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
     max-width: 100%; /* Prevent overflow */
 }
 
@@ -64,15 +66,15 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-    justify-content: center;
-    max-width: 600px; /* Optional: limit the maximum width */
+    display: inline-flex;
+    justify-content: space-evenly;
+    width: 100%;
+    max-width: 100%; /* Optional: limit the maximum width */
     gap: 10px; /* Add some spacing between items */
 }
 
 .navbar ul li {
-    margin: 10px;
+    margin: 0;
 }
 
 .navbar ul li a {
@@ -83,29 +85,34 @@ body {
 /* Icon Box Styles */
 .icon-box {
     background-color: rgb(255, 255, 255);
-    padding: 15px;
-    border-radius: 10px;
+    padding: 0px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     transition: background-color 0.3s ease;
     box-sizing: border-box; /* Ensures padding is included in width and height */
 }
 
 .icon-box img {
-    max-width: 40px;
-    max-height: 40px;
+    max-width: 30px;
+    max-height: 30px;
     margin-bottom: 5px;
 }
 
 .icon-box span {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
-    color: #000;
+    color: #565656;
+}
+
+.fa-solid, .fas {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 30px;
 }
 
 /* Responsive Styles */
@@ -122,6 +129,7 @@ body {
     .icon-box img {
         max-width: 50px;
         max-height: 50px;
+        padding: 15px;
     }
 
     .icon-box span {

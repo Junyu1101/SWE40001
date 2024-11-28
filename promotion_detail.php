@@ -135,7 +135,7 @@
 
 <body>
   <header>
-    <div class="header-container">
+    <div class="promotion-header-container">
       <div class="backicon">
         <a href="promotions.php">
           <i class="fa-sharp fa-solid fa-angle-left"></i>

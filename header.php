@@ -19,18 +19,8 @@ if (session_status() === PHP_SESSION_NONE && basename($_SERVER['PHP_SELF']) !== 
 <body>
     <header>
         <div class="header-container">
-            <div class="logo">
-                <a href="index.php">
-                    <img src="images/ccklogo.png" alt="CCK Logo">
-                </a>
-            </div>
             <div class="login">
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'member'): ?>
-                <span>Welcome, <?php echo htmlspecialchars($_SESSION['user']['memberID']); ?></span>
-                <a href="logout.php">Logout</a>
-            <?php else: ?>
                 <a href="admin_login.php">Login</a>
-            <?php endif; ?>
             </div>
         </div>
         <div class="navbar-wrapper">
