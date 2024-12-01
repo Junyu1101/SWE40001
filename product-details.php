@@ -31,10 +31,11 @@
 
             // Decode JSON image column
             $images = json_decode($product['image'], true);
+            $firstImage = !empty($images) ? $images[0] : 'images/placeholder.jpg'; // Use a placeholder image if no images available
 
             // Display the product details
             echo '<div class="product-image">';
-                    echo '<img src="' . htmlspecialchars($product['image']) . '" alt="' . htmlspecialchars($product['name']) . '">';
+                    echo '<img src="' . htmlspecialchars($firstImage) . '" alt="' . htmlspecialchars($product['name']) . '">';
             echo '</div>';
 
             echo '
