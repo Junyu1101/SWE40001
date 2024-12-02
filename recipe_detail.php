@@ -247,7 +247,13 @@ $recipe = $result->fetch_assoc();
             <?php if (!empty($recipe['product_name'])): ?>
                 <div class="product-info">
                     <?php if (!empty($recipe['product_image'])): ?>
-                        <img src="<?php echo htmlspecialchars($recipe['product_image']); ?>" alt="<?php echo htmlspecialchars($recipe['product_name']); ?>">
+                        <?php foreach (json_decode($recipe['product_image']) as $image_path) {
+                        
+                            echo "<img src='" . htmlspecialchars($image_path) . "' alt='" . htmlspecialchars($recipe['product_name']) . "'>";
+                    
+                        } ?>
+
+                        
                     <?php endif; ?>
                     <div>
                         <h3>
