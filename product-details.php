@@ -5,7 +5,6 @@
     <?php
     include 'databaseconnection.php'; // Include database connection
 
-    // Check if the productID is set and is numeric to prevent SQL injection
     if (isset($_GET['productID']) && is_numeric($_GET['productID'])) {
         $product_id = $_GET['productID'];
 
@@ -25,17 +24,18 @@
             die("Error executing query: " . $stmt->error);
         }
 
-        // Check if a product is found with the given productID
         if ($result->num_rows == 1) {
             $product = $result->fetch_assoc();
-
-            // Decode JSON image column
             $images = json_decode($product['image'], true);
-            $firstImage = !empty($images) ? $images[0] : 'images/placeholder.jpg'; // Use a placeholder image if no images available
 
-            // Display the product details
             echo '<div class="product-image">';
-                    echo '<img src="' . htmlspecialchars($firstImage) . '" alt="' . htmlspecialchars($product['name']) . '">';
+            if (!empty($images)) {
+                foreach ($images as $image) {
+                    echo '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($product['name']) . '">';
+                }
+            } else {
+                echo '<img src="images/placeholder.jpg" alt="No Image Available">';
+            }
             echo '</div>';
 
             echo '
@@ -43,6 +43,13 @@
                 <h1>' . htmlspecialchars($product['name']) . '</h1>
                 <p>' . htmlspecialchars($product['description']) . '</p>
                 <p class="product-price">RM' . htmlspecialchars($product['price']) . '</p>
+            </div>';
+
+            // QR code for this product
+            echo '
+            <div class="product-qr">
+                <h3>Scan to view this product</h3>
+                <img src="generate_qr_code.php?productID=' . htmlspecialchars($product_id) . '" alt="QR Code">
             </div>';
         } else {
             echo "<p>Product not found.</p>";
@@ -58,3 +65,5 @@
 </div>
 
 <?php include 'footer.php'; ?>
+
+
