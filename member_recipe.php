@@ -6,17 +6,17 @@ include 'databaseconnection.php';
 $categoryQuery = "SELECT categoryID, categoryName FROM categories";
 $categoryResult = $conn->query($categoryQuery);
 
+// Fetch distinct categories from the `recipe` table
+$categoryQuery = "SELECT DISTINCT category FROM recipe";
+$categoryResult = $conn->query($categoryQuery);
+
 // Get selected category from URL, if set
 $selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
 
 // Fetch all recipes, filtered by the selected category if applicable
-$sql = "SELECT recipe.*, product.category, categories.categoryName 
-        FROM recipe 
-        LEFT JOIN product ON recipe.productID = product.productID
-        LEFT JOIN categories ON product.category = categories.categoryID";
-
+$sql = "SELECT * FROM recipe";
 if (!empty($selectedCategory)) {
-    $sql .= " WHERE categories.categoryName = ?";
+    $sql .= " WHERE category = ?";
 }
 
 $stmt = $conn->prepare($sql);
@@ -26,7 +26,6 @@ if (!empty($selectedCategory)) {
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -179,16 +178,16 @@ $result = $stmt->get_result();
         
         <!-- Category Filter Dropdown -->
         <form method="GET" class="category-filter">
-            <label for="category">Filter by Category:</label>
+                    <label for="category">Filter by Category:</label>
             <select name="category" id="category" onchange="this.form.submit()">
                 <option value="">All Categories</option>
                 <?php
-                // Populate dropdown with category names from the `categories` table
+                // Populate dropdown with distinct categories from the `recipe` table
                 if ($categoryResult->num_rows > 0) {
                     while ($catRow = $categoryResult->fetch_assoc()) {
-                        $categoryName = $catRow['categoryName'];
-                        $selected = ($categoryName == $selectedCategory) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($categoryName) . "' $selected>" . htmlspecialchars($categoryName) . "</option>";
+                        $category = $catRow['category'];
+                        $selected = ($category == $selectedCategory) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($category) . "' $selected>" . htmlspecialchars($category) . "</option>";
                     }
                 }
                 ?>

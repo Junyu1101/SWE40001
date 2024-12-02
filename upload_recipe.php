@@ -4,6 +4,7 @@ include 'databaseconnection.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productID = $_POST['productID'];
     $title = htmlspecialchars($_POST['title']);
+    $category = htmlspecialchars($_POST['category']); 
     $description = htmlspecialchars($_POST['description']);
     $imagePaths = [];
 
@@ -38,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Convert image paths array to JSON
     $imagesJSON = json_encode($imagePaths);
 
-    // Insert recipe details
-    $sql = "INSERT INTO recipe (productID, title, description, image) VALUES (?, ?, ?, ?)";
+    // Insert recipe details with category
+    $sql = "INSERT INTO recipe (productID, title, category, description, image) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isss", $productID, $title, $description, $imagesJSON);
+    $stmt->bind_param("issss", $productID, $title, $category, $description, $imagesJSON);
 
     if ($stmt->execute()) {
         header("Location: upload_recipe.php?status=success");
@@ -50,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: upload_recipe.php?error=DatabaseError");
         exit();
     }
+
 
     $stmt->close();
 }
@@ -180,6 +182,9 @@ $conn->close();
 
         <label for="title">Title:</label>
         <input type="text" name="title" required><br>
+        
+        <label for="category">Category:</label>
+        <textarea name="category" required></textarea><br>
 
         <label for="description">Description:</label>
         <textarea name="description" required></textarea><br>

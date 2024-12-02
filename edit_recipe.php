@@ -20,6 +20,7 @@ if (isset($_GET['id'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $productID = $_POST['productID'];
         $title = $_POST['title'];
+        $category = trim($_POST['category']); // Trim any unnecessary spaces
         $description = $_POST['description'];
 
         // Validate productID as numeric
@@ -45,13 +46,13 @@ if (isset($_GET['id'])) {
             $imageJSON = $recipe['image']; // Retain existing images if none uploaded
         }
 
-        // Update recipe details in the database, including productID
-        $sql = "UPDATE recipe SET productID = ?, title = ?, description = ?, image = ? WHERE recipeID = ?";
+        // Update recipe details in the database
+        $sql = "UPDATE recipe SET productID = ?, title = ?, category = ?, description = ?, image = ? WHERE recipeID = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isssi", $productID, $title, $description, $imageJSON, $recipe_id);
+        $stmt->bind_param("issssi", $productID, $title, $category, $description, $imageJSON, $recipe_id);
         if ($stmt->execute()) {
-            $_SESSION['success_message'] = "Recipe updated successfully!"; // Set success message
-            header("Location: edit_recipe.php?id=" . $recipe_id); // Redirect to refresh the page
+            $_SESSION['success_message'] = "Recipe updated successfully!";
+            header("Location: edit_recipe.php?id=" . $recipe_id); // Refresh the page
             exit;
         } else {
             echo "Error updating recipe: " . $conn->error;
@@ -212,7 +213,13 @@ if (isset($_GET['id'])) {
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($recipe['title']); ?>" required>
             </div>
+            
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" value="<?php echo htmlspecialchars($recipe['category']); ?>" required placeholder="Enter the recipe category (e.g., Dessert, Main Course)">
+            </div>
 
+            
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea id="description" name="description" rows="15" required><?php echo htmlspecialchars($recipe['description']); ?></textarea>

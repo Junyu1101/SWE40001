@@ -202,6 +202,7 @@ $result = $conn->query($sql);
                     <tr>
                         <th>Recipe ID</th>
                         <th>Product ID</th>
+                        <th>Category</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Images</th>
@@ -213,6 +214,7 @@ $result = $conn->query($sql);
                         <tr>
                             <td data-label="Recipe ID"><?php echo htmlspecialchars($row['recipeID']); ?></td>
                             <td data-label="Product ID"><?php echo htmlspecialchars($row['productID']); ?></td>
+                            <td data-label="Category"><?php echo htmlspecialchars($row['category']); ?></td>
                             <td data-label="Title"><?php echo htmlspecialchars($row['title']); ?></td>
                             <td data-label="Description"><?php echo htmlspecialchars($row['description']); ?></td>
 
